@@ -1,28 +1,32 @@
 @charset "UTF-8";
-@import "helpers.css";
-@import "desktop.css";
-@import "mobile.css";
-@import "header.css";
-@import "loaderAnimation.css";
-@import "uploadButton.css";
+
+/* @import 'helpers.css';
+@import 'desktop.css';
+@import 'mobile.css';
+@import 'header.css';
+@import 'loaderAnimation.css';
+@import 'uploadButton.css'; */
 
 /* .testname {
   color: #16c116;
 } */
 
 @font-face {
-  font-family: "Montserrat";
+  font-family: 'Montserrat';
   font-style: normal;
   font-weight: 400;
-  src: local("Montserrat-Regular"), url(https://fonts.gstatic.com/s/montserrat/v7/zhcz-_WihjSQC0oHJ9TCYL3hpw3pgy2gAi-Ip7WPMi0.woff) format("woff");
+  src: local('Montserrat-Regular'),
+    url(https://fonts.gstatic.com/s/montserrat/v7/zhcz-_WihjSQC0oHJ9TCYL3hpw3pgy2gAi-Ip7WPMi0.woff)
+      format('woff');
 }
 
 @font-face {
-  font-family: "Open Sans";
+  font-family: 'Open Sans';
   font-style: normal;
   font-weight: 400;
-  src: local("Open Sans"), local("OpenSans"),
-    url(https://fonts.gstatic.com/s/opensans/v13/cJZKeOuBrn4kERxqtaUH3ZBw1xU1rKptJj_0jans920.woff2) format("woff2");
+  src: local('Open Sans'), local('OpenSans'),
+    url(https://fonts.gstatic.com/s/opensans/v13/cJZKeOuBrn4kERxqtaUH3ZBw1xU1rKptJj_0jans920.woff2)
+      format('woff2');
 }
 
 *::before,
@@ -41,7 +45,7 @@ textarea {
 /* -------------------------------------------------- */
 
 .fnt-ps {
-  font-family: "Montserrat";
+  font-family: 'Montserrat';
 }
 
 /* End */
@@ -52,7 +56,7 @@ html * {
 }
 
 body {
-  font-family: "Montserrat" !important;
+  font-family: 'Montserrat' !important;
   background-color: rgba(76, 169, 252, 0.05) !important;
   font-size: 16px !important;
   line-height: 21px;
@@ -555,117 +559,6 @@ button:focus {
   overflow: hidden;
 }
 
-.pttl--e {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  width: 60px;
-  height: 24px;
-  max-height: 100%;
-  background-image: -webkit-gradient(linear, left top, right top, color-stop(0%, rgba(255, 255, 255, 0)), color-stop(100%, #fff));
-  background-image: -webkit-linear-gradient(left, rgba(255, 255, 255, 0), #fff);
-  background: linear-gradient(to right, rgba(255, 255, 255, 0), #fff);
-  filter: progid:dximagetransform.microsoft.gradient(GradientType=1, StartColorStr=' #00ffffff ', EndColorStr=' #ffffff ');
-}
-
-/* -------------------------------------------------- */
-
-/* separator with text */
-
-/* -------------------------------------------------- */
-
-.hr-text {
-  line-height: 1em;
-  position: relative;
-  outline: 0;
-  border: 0;
-  color: black;
-  text-align: center;
-  height: 1.5em;
-  opacity: 0.5;
-}
-
-.hr-text::before {
-  content: "";
-  background: linear-gradient(to right, transparent, #818078, transparent);
-  position: absolute;
-  left: 0;
-  top: 50%;
-  width: 100%;
-  height: 1px;
-}
-
-.hr-text::after {
-  content: attr(data-content);
-  position: relative;
-  display: inline-block;
-  padding: 0 0.5em;
-  line-height: 1.5em;
-  color: #51505d;
-  background-color: #f1f1f2;
-}
-
-/* -------------------------------------------------- */
-
-/* separator */
-
-/* -------------------------------------------------- */
-
-.hr-sprtr {
-  height: 1px;
-  background-color: #dfe0e3;
-  width: 15%;
-  margin: 0 auto;
-}
-
-/* -------------------------------------------------- */
-
-/* Circular Image List */
-
-/* -------------------------------------------------- */
-
-.circle-img-list {
-  /* padding: 10px 0; */
-}
-
-.circle-img-list-itm {
-  position: relative;
-}
-
-.circle-img-list-itm-n {
-  position: absolute;
-  top: 0;
-  height: 60px;
-  width: 60px;
-  border-radius: 50%;
-  background: rgba(0, 0, 0, 0.3);
-  color: #fff;
-}
-
-.circle-img-list-itm-n-txt {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-}
-
-.circle-img-list-itm-0 {
-  padding-left: 10px;
-}
-
-.circle-img-list-itm-1 {
-  left: -10px;
-}
-
-.circle-img-list-itm-2 {
-  left: -20px;
-}
-
-.circle-img-list-itm img {
-  border-radius: 50%;
-  height: 60px;
-  width: 60px;
-}
-
 /* -------------------------------------------------- */
 
 /* Vertical and Horizontal page center alignment css */
@@ -677,26 +570,6 @@ button:focus {
   justify-content: center;
   align-items: center;
   height: 100vh;
-}
-
-/* -------------------------------------------------- */
-
-/* hover link animation css */
-
-/* -------------------------------------------------- */
-
-.hover-anim::after {
-  content: "";
-  display: block;
-  width: 0;
-  height: 2px;
-  background: #707070;
-  transition: width 0.3s;
-}
-
-.hover-anim:hover::after {
-  width: 100%;
-  transition: width 0.3 s;
 }
 
 /* -------------------------------------------------- */
@@ -752,94 +625,6 @@ button:focus {
   padding: 8px 16px;
 }
 
-input[type="file"] {
+input[type='file'] {
   display: none;
-}
-
-/* -------------------------------------------------- */
-
-/* somesh css edits */
-
-/* -------------------------------------------------- */
-
-.blue-shadow {
-  box-shadow: 0 5px 25px 0 rgba(76, 169, 252, 0.25) !important;
-}
-
-.MuiLinearProgress-bar-178.MuiLinearProgress-barColorSecondary-180.MuiLinearProgress-bar1Determinate-182 {
-  border-radius: 0 !important;
-}
-
-.MuiLinearProgress-root-170.MuiLinearProgress-colorSecondary-172 {
-  border-radius: 0 !important;
-}
-
-.buyModalText {
-  font-size: 16px !important;
-}
-
-.blue-button {
-  width: 120px;
-  height: 32px;
-  background-color: #4ca9fc;
-  border-radius: 2.25em;
-  border: None;
-  color: #fff !important;
-  font-family: "Montserrat";
-  font-size: 12px;
-  font-weight: 400;
-  margin-bottom: 5px;
-  margin-top: 5px;
-  margin-left: 120px;
-  transition: 100ms;
-}
-
-.MuiPaper-root-20.MuiPaper-elevation8-30.MuiPaper-rounded-21.MuiCard-root-169 {
-  box-shadow: 0 0 0 0 #fff0 !important;
-  border: 1px solid #eaeaea !important;
-}
-
-.blue-button:hover {
-  color: #fff !important;
-  transition: 50ms !important;
-  box-shadow: 0 0 30px #4caafc79;
-}
-
-.blue-button:active {
-  box-shadow: 0 0 0 !important;
-  background-color: #1e7aca;
-  color: #fff !important;
-}
-
-.register {
-  background-color: #4ca9fc;
-  border-radius: 100px !important;
-  border: None;
-  color: #fff !important;
-  font-family: "Montserrat" !important;
-  font-size: 20px;
-  font-weight: 400;
-  margin-bottom: 0;
-  margin-top: 0;
-  transition: 100ms;
-}
-
-.btn.focus,
-.btn:focus,
-.btn:hover {
-  color: #fff !important;
-  text-decoration: none;
-}
-
-.lnktags {
-  background: none !important;
-  color: inherit !important;
-  border: none !important;
-  padding: 0 !important;
-  font: inherit !important;
-  cursor: pointer !important;
-}
-
-.lnktags:hover {
-  color: #4ca9fc !important;
 }

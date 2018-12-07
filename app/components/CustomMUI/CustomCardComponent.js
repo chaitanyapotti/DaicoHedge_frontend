@@ -7,4 +7,6 @@ import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 
-export const CustomCard = props => <Card>{props.children}</Card>;
+export const CustomCard = props => <Card {...props}>{props.children}</Card>;
+
+export const CustomCardHeader = props => <CardHeader {...props} />;
