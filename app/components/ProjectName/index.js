@@ -7,7 +7,6 @@ class ProjectName extends React.Component {
     return (
       <Grid spacing={16} container>
         <CustomCard style={{ padding: '50px' }}>
-          hello
           <Grid item lg={8}>
             <div className="hl">
               <span className="prjct-logo hli">
