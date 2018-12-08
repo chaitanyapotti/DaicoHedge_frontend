@@ -9,7 +9,7 @@ import { CustomTextField } from '../CustomMUI/CustomTextField';
 import { getVoteHistogram } from '../../actions/pollFactoryActions';
 import RCSlider from '../Common/RCSlider';
 import { marketMakingSpreadChanged, startTradingBot, balanceRatios, balanceRatioChanged, balancingAggressionChanged,
-   fetchDaiRate, manualAggressionChanged, manualEthChanged, startManualEthHedging, startManualDaiHedging, manualDaiChanged } from "../../actions/tradeActions";
+   fetchDaiRate, manualAggressionChanged, manualEthChanged, startManualEthHedging, startManualDaiHedging, manualDaiChanged, checkHedging } from "../../actions/tradeActions";
 import { getRemainingBalance } from "../../actions/pollFactoryActions";
  
 
@@ -30,7 +30,7 @@ class MarketMaking extends Component {
   };
 
   startTradingBotAction = () => {
-    this.props.dispatch(startTradingBot(this.props.spreadPercentage, this.props.avgPrice, this.props.etherBalance + this.props.daiBalance/(this.props.avgPrice)));
+    this.props.dispatch(startTradingBot(this.props.spreadPercentage, this.props.avgPrice, this.props.etherBalance + this.props.daiBalance*this.props.avgPrice));
   };
 
   render() {
@@ -266,13 +266,38 @@ class ManualData extends Component {
 }
 
 class TradeCard extends Component {
-  state = {
-    value: 0
-  };
+  constructor(props) {
+    super(props);
+    this.interval = null;
+    this.state = {
+      value: 0
+    };  
+  }
 
+  initCheckOnHedging() {
+    if (!this.interval) {
+      this.interval = setInterval(() => {
+        this.props.dispatch(checkHedging(this.props.spreadPercentage,
+          this.props.balanceRatio,
+          this.props.balancingAggressionFactor,
+          this.props.avgPrice,
+          this.props.manualAggressionFactor,
+          this.props.botStartedSuccessfully,
+          this.props.currentStrategy,
+          this.props.currentStrategyCode, 
+          this.props.etherBalance, 
+          this.props.daiBalance,
+          this.props.current_ask,
+          this.props.current_bid
+          ));
+      }, 1800000);
+    }
+  }
+  
   componentDidMount(){
     this.props.dispatch(fetchDaiRate())
     this.props.dispatch(getRemainingBalance())
+    this.initCheckOnHedging()
   }
 
   handleChange = (event, value) => {
