@@ -8,8 +8,8 @@ import { CustomButton } from '../CustomMUI/CustomButton';
 import { CustomTextField } from '../CustomMUI/CustomTextField';
 import { getVoteHistogram } from '../../actions/pollFactoryActions';
 import RCSlider from '../Common/RCSlider';
-import { marketMakingSpreadChanged, startTradingBot, balanceRatios, balanceRatioChanged, 
-  balancingAggressionChanged, fetchDaiRate, manualAggressionChanged, checkHedging } from "../../actions/tradeActions";
+import { marketMakingSpreadChanged, startTradingBot, balanceRatios, balanceRatioChanged, balancingAggressionChanged,
+   fetchDaiRate, manualAggressionChanged, manualEthChanged, startManualEthHedging, startManualDaiHedging, manualDaiChanged, checkHedging } from "../../actions/tradeActions";
 import { getRemainingBalance } from "../../actions/pollFactoryActions";
  
 
@@ -67,7 +67,7 @@ class DAIRatio extends Component {
   };
 
   startBalancingRatio = () => {
-    this.props.dispatch(balanceRatios(this.props.balanceRatio));
+    this.props.dispatch(balanceRatios(this.props.balanceRatio, this.props.balancingAggressionFactor, this.props.etherBalance, this.props.daiBalance, this.props.avgPrice, this.props.current_ask, this.props.current_bid));
   };
 
   onChangeBalancingAggression = value => {
@@ -153,20 +153,37 @@ class ManualData extends Component {
     this.setState({ value });
   };
 
+
+  handleStartManualEthHedging = () =>{
+    this.props.dispatch(startManualEthHedging(this.props.current_ask, this.props.current_bid, this.props.manualAggressionFactor, this.props.manualEthAmount*Math.pow(10, 18)))
+  }
+
+  handleManualEthChange = (event) => {
+    this.props.dispatch(manualEthChanged(event.target.value))
+  };
+
+  handleStartManualDaiHedging = () =>{
+    this.props.dispatch(startManualDaiHedging(this.props.current_ask, this.props.current_bid, this.props.manualAggressionFactor, parseInt(this.props.manualDaiAmount*this.props.avgPrice*Math.pow(10, 18)) ))
+  }
+
+  handleManualDaiChange = (event) => {
+    this.props.dispatch(manualDaiChanged(event.target.value))
+  };
+
   ConvertDai = props => (
     <div className="push--top">
       <Grid container>
         <Grid item lg={6}>
           <CustomTextField
             label="Amount of ETH"
-            value=""
+            value={this.props.manualEthAmount}
             fullWidth
-            onChange={() => this.handleTextChange()}
+            onChange={this.handleManualEthChange}
           />
         </Grid>
         <Grid className="text--center" item lg={6}>
           <span>
-            <CustomButton>Start Hedging</CustomButton>
+            <CustomButton onClick={this.handleStartManualEthHedging}>Start Hedging</CustomButton>
           </span>
         </Grid>
       </Grid>
@@ -179,14 +196,14 @@ class ManualData extends Component {
         <Grid item lg={6}>
           <CustomTextField
             label="Amount of DAI"
-            value=""
+            value={this.props.manualDaiAmount}
             fullWidth
-            onChange={() => this.handleTextChange()}
+            onChange={this.handleManualDaiChange}
           />
         </Grid>
         <Grid className="text--center" item lg={6}>
           <span>
-            <CustomButton>Confirm Trade</CustomButton>
+            <CustomButton onClick={this.handleStartManualDaiHedging}>Start Hedging</CustomButton>
           </span>
         </Grid>
       </Grid>
@@ -253,7 +270,7 @@ class TradeCard extends Component {
     super(props);
     this.interval = null;
     this.state = {
-      value: 2
+      value: 0
     };  
   }
 
@@ -334,7 +351,9 @@ class TradeCard extends Component {
 
 const mapStatesToProps = state => {
   const { spreadPercentage, balanceRatio, balancingAggressionFactor, avgPrice, manualAggressionFactor, botStartedSuccessfully, 
-    currentStrategy, currentStrategyCode } =
+    currentStrategy, currentStrategyCode, manualEthAmount, 
+    manualDaiAmount, current_ask,
+    current_bid } =
     state.TradeCardData || {};
   const { etherBalance, daiBalance } = state.PollFactoryReducer || {}
   return {
@@ -347,7 +366,11 @@ const mapStatesToProps = state => {
     daiBalance,
     botStartedSuccessfully,
     currentStrategy,
-    currentStrategyCode
+    currentStrategyCode,
+    manualEthAmount,
+    manualDaiAmount,
+    current_ask,
+    current_bid
   };
 };
 
