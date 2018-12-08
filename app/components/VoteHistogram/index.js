@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactEcharts from 'echarts-for-react';
-import { Row, Col } from '../../../helpers/react-flexbox-grid';
 
 Array.prototype.max = function() {
   return Math.max.apply(null, this);
@@ -143,7 +142,7 @@ const VoteHistogram = props => {
     props || {};
   return (
     <div>
-      <Row>
+      {/* <Row>
         <Col lg={12}>
           <div className="txt-xxxl text--primary">Vote Histogram</div>
         </Col>
@@ -173,16 +172,16 @@ const VoteHistogram = props => {
         </Col>
       </Row>
       <Row>
-        <Col lg={6}>
-          <ReactEcharts
-            option={getOption(voteHistogramData)}
-            notMerge
-            lazyUpdate
-            style={{ height: '25em', width: '30em', padding: '0px' }}
-            opts={{ renderer: 'svg' }}
-          />
-        </Col>
-      </Row>
+        <Col lg={6}> */}
+      <ReactEcharts
+        option={getOption(voteHistogramData)}
+        notMerge
+        lazyUpdate
+        style={{ height: '25em', width: '30em', padding: '0px' }}
+        opts={{ renderer: 'svg' }}
+      />
+      {/* </Col>
+      </Row> */}
     </div>
   );
 };

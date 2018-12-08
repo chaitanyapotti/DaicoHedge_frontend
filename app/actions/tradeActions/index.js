@@ -53,56 +53,6 @@ export const fetchDaiRate =() => async (dispatch) =>{
     //     web3.utils.toWei('1'), // srcQty
     //   ).call();
 
-export const fetchDaiRate = () => async dispatch => {
-  axios
-    .get('https://api.kyber.network/market')
-    .then(data => {
-      let d = data.data.data;
-      for (let instrument in d) {
-        if (d[instrument]['quote_symbol'] === 'DAI') {
-          dispatch({
-            type: actionTypes.DAI_PRICES,
-            payload: d[instrument]
-          });
-          // break
-        }
-      }
-    })
-    .catch(err => {
-      console.log(err);
-      dispatch({
-        type: actionTypes.DAI_PRICES_ERROR,
-        payload: 'error'
-      });
-    });
-};
-// let expectedRateBuy;
-// let slippageRateBuy;
-// let expectedRateSell;
-// let slippageRateSell;
-// const buySidePrice = await NetworkProxyInstance.methods.getExpectedRate(
-//     ETH_ADDRESS, // srcToken
-//     DAI_ADDRESS, // destToken
-//     web3.utils.toWei('1'), // srcQty
-//   ).call();
-
-//   console.log("buy side prices: ", buySidePrice)
-//   expectedRateBuy = buySidePrice.expectedRate;
-//   slippageRateBuy = buySidePrice.slippageRate;
-
-//   const sellSidePrice = await NetworkProxyInstance.methods.getExpectedRate(
-//     DAI_ADDRESS, // destToken
-//     ETH_ADDRESS, // srcToken
-//     web3.utils.toWei('1'), // srcQty
-//   ).call();
-//   expectedRateSell = sellSidePrice.expectedRate;
-//   slippageRateSell = sellSidePrice.slippageRate;
-
-//   dispatch({
-//       type: actionTypes.DAI_PRICES,
-//       payload: (expectedRateBuy + expectedRateSell)/2
-//   })
-
 export const marketMakingSpreadChanged = value => dispatch => {
   return dispatch({
     type: actionTypes.MARKET_MAKING_SPREAD_CHANGED,
