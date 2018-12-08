@@ -8,7 +8,10 @@ import MasonaryLayout from '../Common/MasonaryLayout';
 import ProjectName from '../ProjectName';
 import ProjectDetails from '../ProjectDetails';
 import VoteHistogram from '../VoteHistogram';
-import { getVoteHistogram } from '../../actions/pollFactoryActions';
+import {
+  getVoteHistogram,
+  getSpendCurve
+} from '../../actions/pollFactoryActions';
 import { CustomCard } from '../CustomMUI/CustomCardComponent';
 
 type Props = {};
@@ -18,10 +21,12 @@ class Investor extends Component<Props> {
 
   componentDidMount() {
     this.props.dispatch(getVoteHistogram());
+    this.props.dispatch(getSpendCurve());
   }
 
   render() {
-    const { voteHistogramData } = this.props || {};
+    const { voteHistogramData, spendingCurveData } = this.props || {};
+    console.log('spendingCurveData', spendingCurveData);
     return (
       <Grid container>
         <MasonaryLayout>
@@ -37,10 +42,11 @@ class Investor extends Component<Props> {
 
 const mapStatesToProps = state => {
   const { PollFactoryReducer } = state || {};
-  const { voteHistogramData } = PollFactoryReducer || {};
+  const { voteHistogramData, spendingCurveData } = PollFactoryReducer || {};
 
   return {
-    voteHistogramData
+    voteHistogramData,
+    spendingCurveData
   };
 };
 export default connect(mapStatesToProps)(Investor);

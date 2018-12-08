@@ -122,19 +122,19 @@ export const getVoteHistogram = () => async dispatch => {
     const bool2 = (capPercent * 10) % 1 === 0;
     // const bool3 = capPercent * 100 % 1 === 0;
     const fixedSize = bool1 ? 2 : bool2 ? 3 : 4;
-    let binDict = {};
+    const binDict = {};
     const binCount = 100;
-    let diff = capPercent / binCount;
+    const diff = capPercent / binCount;
     for (let i = 0; i < binCount; i++) {
       binDict[i] = {};
-      binDict[i]['min'] = (diff * i).toFixed(fixedSize);
-      binDict[i]['max'] = (diff * (i + 1)).toFixed(fixedSize);
-      binDict[i]['voters'] = 0;
+      binDict[i].min = (diff * i).toFixed(fixedSize);
+      binDict[i].max = (diff * (i + 1)).toFixed(fixedSize);
+      binDict[i].voters = 0;
     }
     let activeVotingTokens = 0;
     for (const key in balances) {
       let temp = parseFloat(balances[key]);
-      let capBalance = (capPercent / 100) * parseFloat(totalMintableSupply);
+      const capBalance = (capPercent / 100) * parseFloat(totalMintableSupply);
       let capped = false;
       if (temp >= capBalance) {
         temp = capBalance;
@@ -145,9 +145,9 @@ export const getVoteHistogram = () => async dispatch => {
         if (!capped) {
           binDict[
             Math.floor((temp * 100) / (parseFloat(totalMintableSupply) * diff))
-          ]['voters'] += 1;
+          ].voters += 1;
         } else {
-          binDict[99]['voters'] += 1;
+          binDict[99].voters += 1;
         }
       }
     }
@@ -201,7 +201,7 @@ export const getSpendCurve = () => async dispatch => {
               const { currentTap } = returnValues || {};
               const blockObject = await web3.eth.getBlock(blockNumber);
               const { timestamp } = blockObject;
-              tapData.push({ timestamp: timestamp, amount: currentTap });
+              tapData.push({ timestamp, amount: currentTap });
             }
             for (let index = 0; index < withdrawArray.length; index++) {
               const item = withdrawArray[index];
@@ -212,7 +212,7 @@ export const getSpendCurve = () => async dispatch => {
               const amount = amountWei
                 ? await web3.utils.fromWei(amountWei.toString(), 'ether')
                 : 0;
-              withdrawData.push({ timestamp: timestamp, amount: amount });
+              withdrawData.push({ timestamp, amount });
             }
             for (let index = 0; index < contributionArray.length; index++) {
               const item = contributionArray[index];
@@ -223,14 +223,17 @@ export const getSpendCurve = () => async dispatch => {
               const amount = etherAmount
                 ? await web3.utils.fromWei(etherAmount.toString(), 'ether')
                 : 0;
-              contributionData.push({ timestamp: timestamp, amount: amount });
+              contributionData.push({ timestamp, amount });
             }
             dispatch({
-              tapData: tapData,
-              withdrawData: withdrawData,
-              withdrawXfrData: withdrawXfrData,
-              allXfrData: allXfrData,
-              contributionData: contributionData
+              payload: {
+                tapData,
+                withdrawData,
+                withdrawXfrData,
+                allXfrData,
+                contributionData
+              },
+              type: actionTypes.SPENDING_CURVE_RECEIVED
             });
           } catch (err) {
             console.log(err);
