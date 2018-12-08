@@ -31,7 +31,6 @@ export const fetchDaiRate = () => async dispatch => {
     .get('https://api.kyber.network/market')
     .then(data => {
       let d = data.data.data;
-      console.log(d);
       for (let instrument in d) {
         if (d[instrument]['quote_symbol'] === 'DAI') {
           dispatch({

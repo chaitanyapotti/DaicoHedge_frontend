@@ -1,8 +1,8 @@
-const fs = require('fs');
-const path = require('path');
-const defaultPath = path.resolve(__dirname, '../ABIs');
+import fs from 'fs';
+import path from 'path';
+const defaultPath = path.resolve(__dirname, '../app/ABIs');
 
-module.exports = name => {
+export default name => {
   return new Promise((resolve, reject) => {
     const contractPath = path.resolve(defaultPath, name + '.json');
     if (!fs.existsSync(contractPath))
