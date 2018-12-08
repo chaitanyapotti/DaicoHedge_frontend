@@ -164,7 +164,7 @@ const PieChart = props => {
     props || {};
   return (
     <div>
-      <div className="txt-xxxl text--primary">Token Distribution Chart</div>
+      <div className="txt-xxxl text--primary">Your Balances</div>
       <Grid container>
         <Grid item xs={12} lg={6}>
           <div>

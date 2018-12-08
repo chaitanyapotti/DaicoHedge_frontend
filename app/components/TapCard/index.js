@@ -20,10 +20,10 @@ class ProjectDetails extends React.Component {
                 </div>
               </Grid>
               <Grid item lg={7}>
-                <div className="txt-bold">
+                {/* <div className="txt-bold">
                   Initial Fund Release:{' '}
                   <span className="text--secondary">1200 ETH/person</span>
-                </div>
+                </div> */}
               </Grid>
             </Grid>
           </Grid>
@@ -36,10 +36,10 @@ class ProjectDetails extends React.Component {
                 </div>
               </Grid>
               <Grid item lg={7}>
-                <div className="txt-bold">
+                {/* <div className="txt-bold">
                   Initial Fund Release:{' '}
                   <span className="text--secondary">1200 ETH/person</span>
-                </div>
+                </div> */}
               </Grid>
             </Grid>
           </Grid>
