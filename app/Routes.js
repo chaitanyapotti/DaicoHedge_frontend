@@ -8,7 +8,7 @@ import InvestorPage from './containers/InvestorPage';
 export default () => (
   <App>
     <Switch>
-      <Route path={routes.HOME} component={InvestorPage} />
+      <Route path={routes.HOME} component={HomePage} />
       <Route path={routes.INVESTOR} component={InvestorPage} />
     </Switch>
   </App>
