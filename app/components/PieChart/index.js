@@ -166,7 +166,7 @@ const PieChart = props => {
     <div>
       <div className="txt-xxxl text--primary">Token Distribution Chart</div>
       <Grid container>
-        <Grid xs={12} lg={6}>
+        <Grid item xs={12} lg={6}>
           <div>
             <ReactEcharts
               option={getOption(

@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
+import {connect} from "react-redux";
+// import  {bindActionCreators } from "redux";
 import { Grid, Tabs, Tab, Input, Button, Divider } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { CustomCard } from '../CustomMUI/CustomCardComponent';
 import { CustomButton } from '../CustomMUI/CustomButton';
 import { CustomTextField } from '../CustomMUI/CustomTextField';
 import RCSlider from '../Common/RCSlider';
+import { marketMakingSpreadChanged, startTradingBot, balanceRatios, balanceRatioChanged, balancingAggressionChanged } from "../../actions/tradeActions";
+ 
 
 const styles = theme => ({
   root: {
@@ -15,17 +19,74 @@ const styles = theme => ({
     minWidth: '80px'
   }
 });
+
+class MarketMaking extends Component {
+
+  handleTextChange= (event) => {
+    this.props.dispatch(marketMakingSpreadChanged(event.target.value))
+  }
+
+  startTradingBotAction = () => {
+    this.props.dispatch(startTradingBot(this.props.spreadPercentage)) 
+  }
+
+  render() {
+    return (
+      <div>
+          <Grid container>
+            <Grid item lg={6}>
+              <CustomTextField
+                label="Spread Percentage"
+                value= {this.props.spreadPercentage}
+                fullWidth
+                onChange={this.handleTextChange}
+              />
+            </Grid>
+            <Grid className="text--center" item lg={6}>
+              <span>
+                <CustomButton onClick={this.startTradingBotAction}>Start Bot</CustomButton>
+              </span>
+            </Grid>
+          </Grid>
+      </div>
+    )
+  }
+}
+
 class DAIRatio extends Component {
+
+  onChangeBalanceRatio = (value) => {
+    this.props.dispatch(balanceRatioChanged(value))
+  }
+
+  startBalancingRatio = () => {
+    this.props.dispatch(balanceRatios(this.props.balanceRatio))
+  }
+
+
+  onChangeBalancingAggression = (value) => {
+    this.props.dispatch(balancingAggressionChanged(value))
+  }
+
   render() {
     return (
       <div className="push--top">
         <Grid container>
           <Grid item lg={9}>
-            <RCSlider />
+            <div>Balance Ratio</div>
+            <span> <RCSlider onChange={this.onChangeBalanceRatio} value={this.props.balanceRatio} /> {this.props.balanceRatio}</span> 
+          </Grid>
+          <Grid item lg={9}>
+          <div>Aggression Factor</div>
+          <span>
+          <RCSlider onChange={this.onChangeBalancingAggression} value={this.props.balancingAggressionFactor} min={1} max={5} step={1} dots/>
+          {this.props.balancingAggressionFactor}
+          </span>
+            
           </Grid>
           <Grid className="text--center" item lg={3}>
             <span>
-              <CustomButton>Confirm Trade</CustomButton>
+              <CustomButton onClick={this.startBalancingRatio}>Confirm Trade</CustomButton>
             </span>
           </Grid>
         </Grid>
@@ -114,7 +175,7 @@ class ManualData extends Component {
 
 class TradeCard extends Component {
   state = {
-    value: 0
+    value: 1
   };
 
   handleChange = (event, value) => {
@@ -149,7 +210,8 @@ class TradeCard extends Component {
           <Divider />
           <div style={{ padding: '0 40px 40px' }}>
             {value === 0 && <ManualData />}
-            {value === 1 && <DAIRatio />}
+            {value === 1 && <DAIRatioConnected />}
+            {value ===2 && <MarketMakingConnected />}
           </div>
         </CustomCard>
       </Grid>
@@ -157,4 +219,29 @@ class TradeCard extends Component {
   }
 }
 
-export default withStyles(styles)(TradeCard);
+// const mapDispatchToProps = dispatch =>
+//   bindActionCreators(
+//     {
+//       marketMakingSpreadChanged
+//     },
+//     dispatch
+//   );
+
+const mapStatesToProps = state => {
+  const {
+    spreadPercentage,
+    balanceRatio,
+    balancingAggressionFactor
+  } = state.TradeCardData || {};
+  return {
+    spreadPercentage,
+    balanceRatio,
+    balancingAggressionFactor
+  };
+};
+
+const myConnector = connect(mapStatesToProps);
+const MarketMakingConnected = myConnector(MarketMaking);
+const DAIRatioConnected = myConnector(DAIRatio);
+
+export default withStyles(styles)(connect(mapStatesToProps)(TradeCard));
