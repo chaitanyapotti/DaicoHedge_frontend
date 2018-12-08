@@ -1,15 +1,11 @@
 @charset "UTF-8";
-
-/* @import 'helpers.css';
+@import '../../../node_modules/rc-slider/assets/index.css';
+@import 'helpers.css';
 @import 'desktop.css';
 @import 'mobile.css';
 @import 'header.css';
 @import 'loaderAnimation.css';
-@import 'uploadButton.css'; */
-
-/* .testname {
-  color: #16c116;
-} */
+@import 'uploadButton.css';
 
 @font-face {
   font-family: 'Montserrat';
@@ -64,6 +60,7 @@ body {
   color: #3d3d3d !important;
   height: 100%;
   position: relative;
+  margin: 0;
 }
 
 * {

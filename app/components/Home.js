@@ -1,12 +1,15 @@
 // @flow
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { Grid, Row, Col } from '@material-ui/core';
 import routes from '../constants/routes';
 // import { Header } from './Common';
 import ProjectName from './ProjectName';
-import SampleC from './SampleC';
-import TradeCard from "./TradeCard";
-import { Grid, Row, Col } from "@material-ui/core";
+import TradeCard from './TradeCard';
+import PieChart from './PieChart';
+import MasonaryLayout from './Common/MasonaryLayout';
+import { CustomCard } from './CustomMUI/CustomCardComponent';
+import WithdrawCard from './WithdrawCard';
 
 type Props = {};
 
@@ -15,20 +18,16 @@ export default class Home extends Component<Props> {
 
   render() {
     return (
-      <div>
-        {/* <SampleC /> */}
-        {/* <Header /> */}
-        <Grid spacing={12}>
-          <Grid item xs={6}>
-            <ProjectName />
-          </Grid>
-          <Grid item xs={6}>
-          <TradeCard/>
-          </Grid>
-        </Grid>
-        
-        <h2>Home</h2>
-      </div>
+      <Grid container>
+        <MasonaryLayout>
+          <ProjectName />
+          <TradeCard />
+          <WithdrawCard />
+          <CustomCard className="card-brdr" style={{ padding: '50px' }}>
+            <PieChart />
+          </CustomCard>
+        </MasonaryLayout>
+      </Grid>
     );
   }
 }
