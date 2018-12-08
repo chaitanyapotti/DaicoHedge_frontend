@@ -1,10 +1,27 @@
 import React from 'react';
 import { Grid } from '@material-ui/core';
+import { connect } from 'react-redux';
 import { CustomCard } from '../CustomMUI/CustomCardComponent';
 import { CustomButton } from '../CustomMUI/CustomButton';
+import {
+  getCurrentTap,
+  getKillConsensus,
+  getRemainingBalance,
+  getVoteHistogram,
+  getTapConsensus
+} from '../../actions/pollFactoryActions';
 
-class ProjectDetails extends React.Component {
+class TapCard extends React.Component {
+  componentDidMount() {
+    this.props.dispatch(getCurrentTap());
+    this.props.dispatch(getKillConsensus());
+    this.props.dispatch(getRemainingBalance());
+    this.props.dispatch(getTapConsensus());
+    this.props.dispatch(getVoteHistogram());
+  }
+
   render() {
+    console.log('aayush state', this.props);
     return (
       <Grid container>
         <CustomCard
@@ -20,10 +37,10 @@ class ProjectDetails extends React.Component {
                 </div>
               </Grid>
               <Grid item lg={7}>
-                {/* <div className="txt-bold">
+                <div className="txt-bold">
                   Initial Fund Release:{' '}
                   <span className="text--secondary">1200 ETH/person</span>
-                </div> */}
+                </div>
               </Grid>
             </Grid>
           </Grid>
@@ -49,5 +66,17 @@ class ProjectDetails extends React.Component {
     );
   }
 }
+const mapStatesToProps = state => {
+  const { pollFactoryReducer } = state || {};
+  const { killConsensus, tapConsensus, currentTap, etherBalance, daiBalance } =
+    pollFactoryReducer || {};
 
-export default ProjectDetails;
+  return {
+    killConsensus,
+    tapConsensus,
+    currentTap,
+    etherBalance,
+    daiBalance
+  };
+};
+export default connect(mapStatesToProps)(TapCard);

@@ -6,7 +6,6 @@ import routes from '../../constants/routes';
 import MasonaryLayout from '../Common/MasonaryLayout';
 import ProjectName from '../ProjectName';
 import ProjectDetails from '../ProjectDetails';
-import TapCard from '../TapCard';
 
 type Props = {};
 
@@ -19,7 +18,6 @@ class Investor extends Component<Props> {
         <MasonaryLayout>
           <ProjectName />
           <ProjectDetails />
-          <TapCard />
         </MasonaryLayout>
       </Grid>
     );
