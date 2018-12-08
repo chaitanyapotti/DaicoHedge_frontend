@@ -19,6 +19,25 @@ const NetworkProxyInstance = new web3.eth.Contract(
   KYBER_NETWORK_PROXY_ADDRESS
 );
 
+export const checkHedging = (spreadPercentage,
+    balanceRatio, balancingAggressionFactor, avgPrice, manualAggressionFactor, etherBalance, daiBalance,
+    botStartedSuccessfully, currentStrategy, currentStrategyCode, etherBalance, daiBalance) => async (dispatch) => {
+        switch (currentStrategyCode) {
+            case 1:{
+                
+                break;
+            }           
+            case 2: {
+                break;
+            }
+            case 3: {
+                break;
+            }
+            default:
+                break;
+        } 
+}
+
 export const fetchDaiRate =() => async (dispatch) =>{
     axios.get("https://api.kyber.network/market")
         .then(data => {

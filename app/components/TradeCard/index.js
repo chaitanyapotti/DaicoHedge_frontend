@@ -8,7 +8,8 @@ import { CustomButton } from '../CustomMUI/CustomButton';
 import { CustomTextField } from '../CustomMUI/CustomTextField';
 import { getVoteHistogram } from '../../actions/pollFactoryActions';
 import RCSlider from '../Common/RCSlider';
-import { marketMakingSpreadChanged, startTradingBot, balanceRatios, balanceRatioChanged, balancingAggressionChanged, fetchDaiRate, manualAggressionChanged } from "../../actions/tradeActions";
+import { marketMakingSpreadChanged, startTradingBot, balanceRatios, balanceRatioChanged, 
+  balancingAggressionChanged, fetchDaiRate, manualAggressionChanged, checkHedging } from "../../actions/tradeActions";
 import { getRemainingBalance } from "../../actions/pollFactoryActions";
  
 
@@ -248,13 +249,38 @@ class ManualData extends Component {
 }
 
 class TradeCard extends Component {
-  state = {
-    value: 2
-  };
+  constructor(props) {
+    super(props);
+    this.interval = null;
+    this.state = {
+      value: 2
+    };  
+  }
 
+  initCheckOnHedging() {
+    if (!this.interval) {
+      this.interval = setInterval(() => {
+        checkHedging(this.props.spreadPercentage,
+          this.props.balanceRatio,
+          this.props.balancingAggressionFactor,
+          this.props.avgPrice,
+          this.props.manualAggressionFactor,
+          this.props.etherBalance,
+          this.props.daiBalance,
+          this.props.botStartedSuccessfully,
+          this.props.currentStrategy,
+          this.props.currentStrategyCode, 
+          this.props.etherBalance, 
+          this.props.daiBalance
+          );
+      }, 1800000);
+    }
+  }
+  
   componentDidMount(){
     this.props.dispatch(fetchDaiRate())
     this.props.dispatch(getRemainingBalance())
+    this.initCheckOnHedging()
   }
 
   handleChange = (event, value) => {
