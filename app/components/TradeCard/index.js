@@ -260,7 +260,7 @@ class ManualData extends Component {
 
 class TradeCard extends Component {
   state = {
-    value: 2
+    value: 0
   };
 
   componentDidMount(){
