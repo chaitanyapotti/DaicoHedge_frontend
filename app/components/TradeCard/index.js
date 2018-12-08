@@ -7,13 +7,8 @@ import { CustomCard } from '../CustomMUI/CustomCardComponent';
 import { CustomButton } from '../CustomMUI/CustomButton';
 import { CustomTextField } from '../CustomMUI/CustomTextField';
 import RCSlider from '../Common/RCSlider';
-import {
-  marketMakingSpreadChanged,
-  startTradingBot,
-  balanceRatios,
-  balanceRatioChanged,
-  balancingAggressionChanged
-} from '../../actions/tradeActions';
+import { marketMakingSpreadChanged, startTradingBot, balanceRatios, balanceRatioChanged, balancingAggressionChanged, fetchDaiRate } from "../../actions/tradeActions";
+ 
 
 const styles = theme => ({
   root: {
@@ -133,7 +128,7 @@ class DAIRatio extends Component {
 
         <div className="push-half--top">1 Eth = 84.24 DAI </div>
         <div className="push-half--top">
-          Your portfolio will gradually get rebalanced until 20 % of its value
+          Your portfolio will gradually get rebalanced until {this.props.balanceRatio}% of its value
           is in DAI
         </div>
       </div>
@@ -217,6 +212,10 @@ class TradeCard extends Component {
   state = {
     value: 1
   };
+
+  componentDidMount(){
+    this.props.dispatch(fetchDaiRate())
+  }
 
   handleChange = (event, value) => {
     this.setState({ value });

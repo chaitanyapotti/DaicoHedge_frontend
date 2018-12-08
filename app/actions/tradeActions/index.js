@@ -12,6 +12,43 @@ const KYBER_NETWORK_PROXY_ADDRESS = "0x3c9AE9a91ed238fcbABC89567547dBd52bc8ef63"
 
 const NetworkProxyInstance = new web3.eth.Contract(KyberNetworkProxyABI, KYBER_NETWORK_PROXY_ADDRESS);
 
+export const withdrawalAmountChanged = (value) => (dispatch) => {
+    return dispatch({
+        type: actionTypes.WITHDRAWAL_AMOUNT_CHANGED,
+        payload: value
+    })
+}
+
+export const fetchDaiRate =() => async (dispatch) =>{
+    let expectedRateBuy;
+    let slippageRateBuy;
+    let expectedRateSell;
+    let slippageRateSell;
+    const buySidePrice = await NetworkProxyInstance.methods.getExpectedRate(
+        ETH_ADDRESS, // srcToken
+        DAI_ADDRESS, // destToken
+        web3.utils.toWei('1'), // srcQty
+      ).call();
+
+      console.log("buy side prices: ", buySidePrice)
+      expectedRateBuy = buySidePrice.expectedRate;
+      slippageRateBuy = buySidePrice.slippageRate;
+
+      const sellSidePrice = await NetworkProxyInstance.methods.getExpectedRate(
+        DAI_ADDRESS, // destToken
+        ETH_ADDRESS, // srcToken
+        web3.utils.toWei('1'), // srcQty
+      ).call();
+      expectedRateSell = sellSidePrice.expectedRate;
+      slippageRateSell = sellSidePrice.slippageRate;
+
+      dispatch({
+          type: actionTypes.DAI_PRICES,
+          payload: (expectedRateBuy + expectedRateSell)/2
+      })
+
+}  
+
 export const marketMakingSpreadChanged = (value) => (dispatch) => {
     return dispatch({
         type: actionTypes.MARKET_MAKING_SPREAD_CHANGED,
