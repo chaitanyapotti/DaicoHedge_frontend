@@ -1,17 +1,15 @@
 import React from 'react';
-import {connect} from "react-redux";
+import { connect } from 'react-redux';
 import { Grid } from '@material-ui/core';
 import { CustomCard } from '../CustomMUI/CustomCardComponent';
 import { CustomTextField } from '../CustomMUI/CustomTextField';
 import { CustomButton } from '../CustomMUI/CustomButton';
-import { withdrawalAmountChanged } from "../../actions/tradeActions";
-
+import { withdrawalAmountChanged } from '../../actions/tradeActions';
 
 class WithdrawCard extends React.Component {
-
-  handleWithdrawalAmountChange = (event) => {
-    this.props.dispatch(withdrawalAmountChanged(event.target.value))
-  }
+  handleWithdrawalAmountChange = event => {
+    this.props.dispatch(withdrawalAmountChanged(event.target.value));
+  };
 
   render() {
     return (
@@ -21,7 +19,7 @@ class WithdrawCard extends React.Component {
           style={{ padding: '50px', width: '100%' }}
         >
           <div className="text--primary txt-xl">Withdrawal Management</div>
-          <Grid container>
+          <Grid className="push--top" container>
             <Grid item lg={6}>
               <CustomTextField
                 label="Enter ETH"
@@ -42,11 +40,8 @@ class WithdrawCard extends React.Component {
   }
 }
 
-
 const mapStatesToProps = state => {
-  const {
-    withdrawalAmount
-  } = state.TradeCardData || {};
+  const { withdrawalAmount } = state.TradeCardData || {};
   return {
     withdrawalAmount
   };
