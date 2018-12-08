@@ -42,6 +42,8 @@ export const fetchDaiRate =() => async (dispatch) =>{
                 payload: "error"
             })
         })
+
+    }
     // let expectedRateBuy;
     // let slippageRateBuy;
     // let expectedRateSell;
@@ -83,12 +85,6 @@ export const balanceRatioChanged = value => dispatch => {
   });
 };
 
-export const balancingAggressionChanged = value => dispatch => {
-  return dispatch({
-    type: actionTypes.BALANCING_AGGRESSION_CHANGED,
-    payload: value
-  });
-};
 
 export const balancingAggressionChanged = (value) => (dispatch) => {
     return dispatch({
@@ -105,7 +101,7 @@ export const manualAggressionChanged = (value) => (dispatch) => {
 }
 
 
-export const startTradingBot = (percentage, avgPrice) => async (dispatch) => {
+export const startTradingBot = (percentage, avgPrice, ethEquivalent) => async (dispatch) => {
     var ConversionRatesContract = await new web3.eth.Contract(conversionRateABI, CONVERSION_RATES_CONTRACT_ADDRESS);
     let expectedRate;
     let slippageRate;
@@ -121,8 +117,8 @@ export const startTradingBot = (percentage, avgPrice) => async (dispatch) => {
     //   stdlog(`ETH <-> KNC getExpectedRate() = expectedRate: ${expectedRate}, slippageRate:${slippageRate}`);
     var txData = await ConversionRatesContract.methods.setBaseRate(
         [DAI_ADDRESS], //ERC20[] tokens
-        [parseInt(avgPrice*(1 + (percentage/100)))], //uint[] baseBuy
-        [parseInt(avgPrice*(1 - (percentage/100)))], //uint[] baseSell
+        [parseInt(avgPrice*(1 + (percentage/200)))], //uint[] baseBuy
+        [parseInt(avgPrice*(1 - (percentage/200)))], //uint[] baseSell
         ["0x0000000000000000000000000000"], //bytes14[] buy
         ["0x0000000000000000000000000000"], //bytes14[] sell
         blockNumber, //most recent ropsten ETH block number as time of writing
@@ -140,9 +136,43 @@ export const startTradingBot = (percentage, avgPrice) => async (dispatch) => {
         },
     SENDER_PRIVATE_KEY
   );
-  let txHash = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
+    let txHash = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
+    console.log(txHash);
+    let imbalance = 0.01*Math.pow(10, 18)*ethEquivalent   
+    let extreme = 5*imbalance 
+    let padding = 5000
+    ConversionRatesContract.methods.setImbalanceStepFunction(
+        DAI_ADDRESS, //ERC20 token: KNC
+        [imbalance, extreme],
+        [0, padding*-1],
+        [imbalance*-1, 0],
+        [padding, 0]
+        // [100000000000000000000,200000000000000000000,300000000000000000000,5000000000000000000000] //uint[] xBuy
+        // [0,-30,-60,-80] //uint[] yBuy
+        // [-300000000000000000000,-200000000000000000000,-100000000000000000000,0] //uint[] xSell
+        // [-70,-50,-25,0] //uint[] ySell
+    ).send(
+    {
+        from: pba[0],
+    },
+    (err, res) => {
+        if (err){
+            console.log("sendsignedtransaction error: ", err)
+            dispatch({
+                type: actionTypes.IMBALANCE_RATIO_SETTING_FAILED,
+                payload: "Failed to set imbalance ratio."
+            })
+            return 
+        }
+        dispatch({
+            type: actionTypes.IMBALANCE_RATIO_SETTING_SUCCESS,
+            payload: "Imbalance ratio set successful."
+        })
+        console.log(`Err: ${err}`);
+        console.log(`Res: ${res}`);
+    }
+    )
 
-  console.log(txHash);
 };
 
 export const balanceRatios = percentage => async dispatch => {

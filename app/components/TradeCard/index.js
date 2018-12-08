@@ -8,6 +8,7 @@ import { CustomButton } from '../CustomMUI/CustomButton';
 import { CustomTextField } from '../CustomMUI/CustomTextField';
 import RCSlider from '../Common/RCSlider';
 import { marketMakingSpreadChanged, startTradingBot, balanceRatios, balanceRatioChanged, balancingAggressionChanged, fetchDaiRate, manualAggressionChanged } from "../../actions/tradeActions";
+import { getRemainingBalance } from "../../actions/pollFactoryActions";
  
 
 const styles = theme => ({
@@ -27,7 +28,7 @@ class MarketMaking extends Component {
   };
 
   startTradingBotAction = () => {
-    this.props.dispatch(startTradingBot(this.props.spreadPercentage, this.props.avgPrice));
+    this.props.dispatch(startTradingBot(this.props.spreadPercentage, this.props.avgPrice, this.props.etherBalance + this.props.daiBalance/(this.props.avgPrice)));
   };
 
   render() {
@@ -246,6 +247,7 @@ class TradeCard extends Component {
 
   componentDidMount(){
     this.props.dispatch(fetchDaiRate())
+    this.props.dispatch(getRemainingBalance())
   }
 
   handleChange = (event, value) => {
@@ -298,14 +300,21 @@ class TradeCard extends Component {
 //   );
 
 const mapStatesToProps = state => {
-  const { spreadPercentage, balanceRatio, balancingAggressionFactor, avgPrice, manualAggressionFactor } =
+  const { spreadPercentage, balanceRatio, balancingAggressionFactor, avgPrice, manualAggressionFactor, botStartedSuccessfully, 
+    currentStrategy, currentStrategyCode } =
     state.TradeCardData || {};
+  const { etherBalance, daiBalance } = state.PollFactoryReducer || {}
   return {
     spreadPercentage,
     balanceRatio,
     balancingAggressionFactor, 
     avgPrice,
-    manualAggressionFactor
+    manualAggressionFactor,
+    etherBalance,
+    daiBalance,
+    botStartedSuccessfully,
+    currentStrategy,
+    currentStrategyCode
   };
 };
 

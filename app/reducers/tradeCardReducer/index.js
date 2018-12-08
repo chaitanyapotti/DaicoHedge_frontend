@@ -9,7 +9,9 @@ const initialStates = {
     current_ask: 0,
     current_bid: 0,
     avgPrice: 0,
-
+    botStartedSuccessfully: false,
+    currentStrategy: "",
+    currentStrategyCode: 0 
 }
 
 export default function TradeCardData(state=initialStates, action) {
@@ -27,7 +29,7 @@ export default function TradeCardData(state=initialStates, action) {
         const { current_ask, current_bid } = action.payload || {}
         let avgPrice = (current_ask + current_bid)/2
         return {
-            ...state, avgPrice: avgPrice, 
+            ...state, avgPrice: avgPrice 
         }
     }
 
@@ -52,6 +54,18 @@ export default function TradeCardData(state=initialStates, action) {
     case actionTypes.MANUAL_AGGRESSION_CHANGED: {
         return {
             ...state, manualAggressionFactor: action.payload
+        }
+    }
+
+    case actionTypes.IMBALANCE_RATIO_SETTING_SUCCESS: {
+        return {
+            ...state, botStartedSuccessfully: true, currentStrategy: "Bid-Ask spread: " + state.spreadPercentage, currentStrategyCode: 3
+        }
+    }
+
+    case actionTypes.IMBALANCE_RATIO_SETTING_FAILED: {
+        return {
+            ...state, botStartedSuccessfully: false, currentStrategy: "Bid-Ask spread: " + state.spreadPercentage, currentStrategyCode: 3
         }
     }
 
