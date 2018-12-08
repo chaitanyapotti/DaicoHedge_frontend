@@ -5,7 +5,9 @@ const initialStates = {
   tapConsensus: 0,
   currentTap: 0,
   etherBalance: 0,
-  daiBalance: 0
+  daiBalance: 0,
+  voteHistogramData: {},
+  spendingCurveData: {}
 };
 
 export default (state = initialStates, action) => {
@@ -37,6 +39,21 @@ export default (state = initialStates, action) => {
         ...state,
         etherBalance,
         daiBalance
+      };
+    }
+    case actionTypes.VOTE_HISTOGRAM_RECEIVED: {
+      const { rec } = action.payload;
+      return {
+        ...state,
+        voteHistogramData: rec
+      };
+    }
+
+    case actionTypes.SPENDING_CURVE_RECEIVED: {
+      const { rec } = action.payload;
+      return {
+        ...state,
+        spendingCurveData: rec
       };
     }
 

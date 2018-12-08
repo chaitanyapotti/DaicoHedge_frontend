@@ -1,10 +1,11 @@
-const web3 = require('../web3Instance');
-const getContractDetails = require('./getContractDetails');
+import web3 from '../web3Instance';
+import getContractDetails from './getContractDetails';
 
-module.exports = (name, address) => {
+export default (name, address) => {
   return new Promise((resolve, reject) => {
     getContractDetails(name)
-      .then(response => {
+      .then(async response => {
+        const accounts = await web3.eth.getAccounts();
         const isCheckSummed = web3.utils.checkAddressChecksum(address);
         if (!isCheckSummed) {
           reject(new Error('Not a valid address'));

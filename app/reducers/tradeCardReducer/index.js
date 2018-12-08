@@ -1,4 +1,4 @@
-import actionTypes from "../../action_types"
+import actionTypes from '../../action_types';
 
 const initialStates = {
     spreadPercentage : 0,
@@ -19,14 +19,13 @@ const initialStates = {
     daiRatioBalancingStarted: false
 }
 
-export default function TradeCardData(state=initialStates, action) {
-  
+export default function TradeCardData(state = initialStates, action) {
   switch (action.type) {
-
     case actionTypes.WITHDRAWAL_AMOUNT_CHANGED: {
-        return {
-            ...state, withdrawalAmount: action.payload 
-        }
+      return {
+        ...state,
+        withdrawalAmount: action.payload
+      };
     }
 
     case actionTypes.DAI_PRICES: {
@@ -38,40 +37,50 @@ export default function TradeCardData(state=initialStates, action) {
         }
     }
 
-    case actionTypes.MARKET_MAKING_SPREAD_CHANGED:{
-        return {
-            ...state, spreadPercentage: action.payload
-        }
+    case actionTypes.MARKET_MAKING_SPREAD_CHANGED: {
+      return {
+        ...state,
+        spreadPercentage: action.payload
+      };
     }
-      
-    case actionTypes.BALANCE_RATE_CHANGED:{
-        return {
-            ...state, balanceRatio: action.payload
-        }
+
+    case actionTypes.BALANCE_RATE_CHANGED: {
+      return {
+        ...state,
+        balanceRatio: action.payload
+      };
     }
 
     case actionTypes.BALANCING_AGGRESSION_CHANGED: {
-        return {
-            ...state, balancingAggressionFactor: action.payload
-        }
+      return {
+        ...state,
+        balancingAggressionFactor: action.payload
+      };
     }
 
     case actionTypes.MANUAL_AGGRESSION_CHANGED: {
-        return {
-            ...state, manualAggressionFactor: action.payload
-        }
+      return {
+        ...state,
+        manualAggressionFactor: action.payload
+      };
     }
 
     case actionTypes.IMBALANCE_RATIO_SETTING_SUCCESS: {
-        return {
-            ...state, botStartedSuccessfully: true, currentStrategy: "Bid-Ask spread: " + state.spreadPercentage, currentStrategyCode: 3
-        }
+      return {
+        ...state,
+        botStartedSuccessfully: true,
+        currentStrategy: `Bid-Ask spread: ${  state.spreadPercentage}`,
+        currentStrategyCode: 3
+      };
     }
 
     case actionTypes.IMBALANCE_RATIO_SETTING_FAILED: {
-        return {
-            ...state, botStartedSuccessfully: false, currentStrategy: "Bid-Ask spread: " + state.spreadPercentage, currentStrategyCode: 3
-        }
+      return {
+        ...state,
+        botStartedSuccessfully: false,
+        currentStrategy: `Bid-Ask spread: ${  state.spreadPercentage}`,
+        currentStrategyCode: 3
+      };
     }
 
     case actionTypes.MANUAL_ETH_IMBALANCE_RATIO_SETTING_SUCCESS: {

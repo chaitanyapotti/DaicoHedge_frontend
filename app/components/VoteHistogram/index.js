@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactEcharts from 'echarts-for-react';
-import { Row, Col } from '../../../helpers/react-flexbox-grid';
 
 Array.prototype.max = function() {
   return Math.max.apply(null, this);
@@ -143,46 +142,14 @@ const VoteHistogram = props => {
     props || {};
   return (
     <div>
-      <Row>
-        <Col lg={12}>
-          <div className="txt-xxxl text--primary">Vote Histogram</div>
-        </Col>
-      </Row>
-
-      <Row className="push--top">
-        <Col lg={6}>
-          <div>
-            <div className="txt-bold">Total Voters:</div>
-            <div className="text--secondary"> {totalVotes}</div>
-          </div>
-        </Col>
-        <Col lg={6}>
-          <div>
-            <div className="txt-bold">Collective Vote Weight:</div>
-            <div className="text--secondary"> {collectiveVoteWeight}%</div>
-          </div>
-        </Col>
-      </Row>
-
-      <Row>
-        <Col lg={6}>
-          <div>
-            <div className="txt-bold">Health:</div>
-            <div className="text--secondary"> {projectHealth}</div>
-          </div>
-        </Col>
-      </Row>
-      <Row>
-        <Col lg={6}>
-          <ReactEcharts
-            option={getOption(voteHistogramData)}
-            notMerge
-            lazyUpdate
-            style={{ height: '25em', width: '30em', padding: '0px' }}
-            opts={{ renderer: 'svg' }}
-          />
-        </Col>
-      </Row>
+      <div className="txt-xxxl text--primary">Vote Histogram</div>
+      <ReactEcharts
+        option={getOption(voteHistogramData)}
+        notMerge
+        lazyUpdate
+        style={{ height: '25em', width: '30em', padding: '0px' }}
+        opts={{ renderer: 'svg' }}
+      />
     </div>
   );
 };

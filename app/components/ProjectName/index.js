@@ -1,9 +1,32 @@
 import React from 'react';
 import { Grid } from '@material-ui/core';
+import { connect } from 'react-redux';
 import { CustomCard } from '../CustomMUI/CustomCardComponent';
+import {
+  getCurrentTap,
+  getKillConsensus,
+  getRemainingBalance,
+  getVoteHistogram,
+  getTapConsensus
+} from '../../actions/pollFactoryActions';
 
 class ProjectName extends React.Component {
+  componentDidMount() {
+    this.props.dispatch(getCurrentTap());
+    this.props.dispatch(getKillConsensus());
+    this.props.dispatch(getRemainingBalance());
+    this.props.dispatch(getTapConsensus());
+    this.props.dispatch(getVoteHistogram());
+  }
+
   render() {
+    const {
+      killConsensus,
+      tapConsensus,
+      currentTap,
+      etherBalance,
+      daiBalance
+    } = this.props || {};
     return (
       <Grid container>
         <CustomCard className="card-brdr" style={{ padding: '50px' }}>
@@ -34,13 +57,52 @@ class ProjectName extends React.Component {
             <Grid container>
               <Grid item lg={5}>
                 <div className="txt-bold">
-                  Tap Amount: <span className="text--secondary">120ETH</span>
+                  Current Tap Amount:{' '}
+                  <span className="text--secondary">
+                    {currentTap} ETH/month
+                  </span>
+                </div>
+              </Grid>
+              <Grid item lg={7}>
+                <div className="txt-bold">
+                  Increment Approval:{' '}
+                  <span className="text--secondary">{tapConsensus} %</span>
+                </div>
+              </Grid>
+            </Grid>
+          </Grid>
+
+          <Grid item lg={12} className="push--top">
+            <Grid container>
+              <Grid item lg={5}>
+                <div className="txt-bold">
+                  Kill Consensue:{' '}
+                  <span className="text--secondary">
+                    {killConsensus} ETH/month
+                  </span>
+                </div>
+              </Grid>
+              <Grid item lg={7}>
+                <div className="txt-bold">
+                  Ether Balance:{' '}
+                  <span className="text--secondary">{etherBalance}</span>
+                </div>
+              </Grid>
+            </Grid>
+          </Grid>
+
+          <Grid item lg={12} className="push--top">
+            <Grid container>
+              <Grid item lg={5}>
+                <div className="txt-bold">
+                  DAI Balance:{' '}
+                  <span className="text--secondary">{daiBalance}</span>
                 </div>
               </Grid>
               <Grid item lg={7}>
                 {/* <div className="txt-bold">
-                  Initial Fund Release:{' '}
-                  <span className="text--secondary">1200 ETH/person</span>
+                  Ether Balance:{' '}
+                  <span className="text--secondary">{etherBalance}</span>
                 </div> */}
               </Grid>
             </Grid>
@@ -51,4 +113,17 @@ class ProjectName extends React.Component {
   }
 }
 
-export default ProjectName;
+const mapStatesToProps = state => {
+  const { PollFactoryReducer } = state || {};
+  const { killConsensus, tapConsensus, currentTap, etherBalance, daiBalance } =
+    PollFactoryReducer || {};
+
+  return {
+    killConsensus,
+    tapConsensus,
+    currentTap,
+    etherBalance,
+    daiBalance
+  };
+};
+export default connect(mapStatesToProps)(ProjectName);

@@ -6,9 +6,10 @@ import { withStyles } from '@material-ui/core/styles';
 import { CustomCard } from '../CustomMUI/CustomCardComponent';
 import { CustomButton } from '../CustomMUI/CustomButton';
 import { CustomTextField } from '../CustomMUI/CustomTextField';
+import { getVoteHistogram } from '../../actions/pollFactoryActions';
 import RCSlider from '../Common/RCSlider';
 import { marketMakingSpreadChanged, startTradingBot, balanceRatios, balanceRatioChanged, balancingAggressionChanged,
-   fetchDaiRate, manualAggressionChanged, manualEthChanged, startManualEthHedging, startManualDaiHedging, manualDaiChanged } from "../../actions/tradeActions";
+   fetchDaiRate, manualAggressionChanged, manualEthChanged, startManualEthHedging, startManualDaiHedging, manualDaiChanged, checkHedging } from "../../actions/tradeActions";
 import { getRemainingBalance } from "../../actions/pollFactoryActions";
  
 
@@ -52,7 +53,9 @@ class MarketMaking extends Component {
             </span>
           </Grid>
         </Grid>
-        <div className="push-half--top">1 ETH = {(1/this.props.avgPrice).toFixed(2)} DAI </div>
+        <div className="push-half--top">
+          1 ETH = {(1 / this.props.avgPrice).toFixed(2)} DAI{' '}
+        </div>
       </div>
     );
   }
@@ -129,10 +132,12 @@ class DAIRatio extends Component {
           </Grid>
         </Grid>
 
-        <div className="push-half--top">1 ETH = {(1/this.props.avgPrice).toFixed(2)} DAI </div>
         <div className="push-half--top">
-          Your portfolio will gradually get rebalanced until {this.props.balanceRatio}% of its value
-          is in DAI
+          1 ETH = {(1 / this.props.avgPrice).toFixed(2)} DAI{' '}
+        </div>
+        <div className="push-half--top">
+          Your portfolio will gradually get rebalanced until{' '}
+          {this.props.balanceRatio}% of its value is in DAI
         </div>
       </div>
     );
@@ -205,7 +210,7 @@ class ManualData extends Component {
     </div>
   );
 
-  onChangeManualAggression  = value => {
+  onChangeManualAggression = value => {
     this.props.dispatch(manualAggressionChanged(value));
   };
   render() {
@@ -225,47 +230,74 @@ class ManualData extends Component {
         {value === 0 && this.ConvertDai()}
         {value === 1 && this.ConvertEth()}
         <div>
-        <span>
-              <RCSlider
-                onChange={this.onChangeManualAggression}
-                value={this.props.manualAggressionFactor}
-                min={1}
-                max={5}
-                step={1}
-                dots
-                dotStyle={{ borderColor: '#ff839b' }}
-                activeDotStyle={{ borderColor: '#ff839b' }}
-                minimumTrackStyle={{ backgroundColor: '#ff839b' }}
-                handleStyle={{
-                  borderColor: '#ff839b',
-                  border: 'solid 2px #ff839b',
-                  '&:active': {
-                    boxShadow: '0 0 0 5px #ff839b'
-                  }
-                }}
-              />
-              <div>
-                Aggression Level :{' '}
-                <span className="text--secondary">
-                  {this.props.manualAggressionFactor}
-                </span>
-              </div>
-            </span>
+          <span>
+            <RCSlider
+              onChange={this.onChangeManualAggression}
+              value={this.props.manualAggressionFactor}
+              min={1}
+              max={5}
+              step={1}
+              dots
+              dotStyle={{ borderColor: '#ff839b' }}
+              activeDotStyle={{ borderColor: '#ff839b' }}
+              minimumTrackStyle={{ backgroundColor: '#ff839b' }}
+              handleStyle={{
+                borderColor: '#ff839b',
+                border: 'solid 2px #ff839b',
+                '&:active': {
+                  boxShadow: '0 0 0 5px #ff839b'
+                }
+              }}
+            />
+            <div>
+              Aggression Level :{' '}
+              <span className="text--secondary">
+                {this.props.manualAggressionFactor}
+              </span>
+            </div>
+          </span>
         </div>
-        <div className="push-half--top">1 ETH = {(1/this.props.avgPrice).toFixed(2)} DAI </div>
+        <div className="push-half--top">
+          1 ETH = {(1 / this.props.avgPrice).toFixed(2)} DAI{' '}
+        </div>
       </div>
     );
   }
 }
 
 class TradeCard extends Component {
-  state = {
-    value: 0
-  };
+  constructor(props) {
+    super(props);
+    this.interval = null;
+    this.state = {
+      value: 0
+    };  
+  }
 
+  initCheckOnHedging() {
+    if (!this.interval) {
+      this.interval = setInterval(() => {
+        checkHedging(this.props.spreadPercentage,
+          this.props.balanceRatio,
+          this.props.balancingAggressionFactor,
+          this.props.avgPrice,
+          this.props.manualAggressionFactor,
+          this.props.etherBalance,
+          this.props.daiBalance,
+          this.props.botStartedSuccessfully,
+          this.props.currentStrategy,
+          this.props.currentStrategyCode, 
+          this.props.etherBalance, 
+          this.props.daiBalance
+          );
+      }, 1800000);
+    }
+  }
+  
   componentDidMount(){
     this.props.dispatch(fetchDaiRate())
     this.props.dispatch(getRemainingBalance())
+    this.initCheckOnHedging()
   }
 
   handleChange = (event, value) => {
@@ -327,7 +359,7 @@ const mapStatesToProps = state => {
   return {
     spreadPercentage,
     balanceRatio,
-    balancingAggressionFactor, 
+    balancingAggressionFactor,
     avgPrice,
     manualAggressionFactor,
     etherBalance,

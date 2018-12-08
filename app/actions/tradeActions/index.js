@@ -1,23 +1,41 @@
-import web3 from "../../web3Instance";
-import actionTypes from "../../action_types";
-import fs from "fs";
-import axios from "axios";
+import web3 from '../../web3Instance';
+import actionTypes from '../../action_types';
+import fs from 'fs';
+import axios from 'axios';
 // 0xd3add19ee7e5287148a5866784aE3C55bd4E375A
 import conversionRateABI from '../../ABIs/ConversionRates';
 import KyberNetworkProxyABI from '../../ABIs/kyberNetworkProxy';
 const ETH_ADDRESS = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee';
 const DAI_ADDRESS = '0x8c13AFB7815f10A8333955854E6ec7503eD841B7';
-const CONVERSION_RATES_CONTRACT_ADDRESS = "0xF6084Ad447076da0246cD28e104533f9f51dbD2F";
-const SENDER_PRIVATE_KEY = "0x1aba488300a9d7297a315d127837be4219107c62c61966ecdf7a75431d75cc61";
-const KYBER_NETWORK_PROXY_ADDRESS = "0xA46E01606f9252fa833131648f4D855549BcE9D9";
+const CONVERSION_RATES_CONTRACT_ADDRESS =
+  '0xF6084Ad447076da0246cD28e104533f9f51dbD2F';
+const SENDER_PRIVATE_KEY =
+  '0x1aba488300a9d7297a315d127837be4219107c62c61966ecdf7a75431d75cc61';
+const KYBER_NETWORK_PROXY_ADDRESS =
+  '0xA46E01606f9252fa833131648f4D855549BcE9D9';
 
-const NetworkProxyInstance = new web3.eth.Contract(KyberNetworkProxyABI, KYBER_NETWORK_PROXY_ADDRESS);
-    
-export const withdrawalAmountChanged = (value) => (dispatch) => {
-    return dispatch({
-        type: actionTypes.WITHDRAWAL_AMOUNT_CHANGED,
-        payload: value
-    })
+const NetworkProxyInstance = new web3.eth.Contract(
+  KyberNetworkProxyABI,
+  KYBER_NETWORK_PROXY_ADDRESS
+);
+
+export const checkHedging = (spreadPercentage,
+    balanceRatio, balancingAggressionFactor, avgPrice, manualAggressionFactor, etherBalance, daiBalance,
+    botStartedSuccessfully, currentStrategy, currentStrategyCode, etherBalance, daiBalance) => async (dispatch) => {
+        switch (currentStrategyCode) {
+            case 1:{
+                
+                break;
+            }           
+            case 2: {
+                break;
+            }
+            case 3: {
+                break;
+            }
+            default:
+                break;
+        } 
 }
 
 export const manualEthChanged = (value) => (dispatch) => {
@@ -244,6 +262,7 @@ export const manualAggressionChanged = (value) => (dispatch) => {
         payload: value
     })
 }
+
 
 export const startTradingBot = (percentage, avgPrice, ethEquivalent) => async (dispatch) => {
     var ConversionRatesContract = await new web3.eth.Contract(conversionRateABI, CONVERSION_RATES_CONTRACT_ADDRESS);
