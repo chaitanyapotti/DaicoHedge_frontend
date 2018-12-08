@@ -197,8 +197,6 @@ export const fetchDaiRate =() => async (dispatch) =>{
     //     web3.utils.toWei('1'), // srcQty
     //   ).call();
 
-<<<<<<< HEAD
-=======
     //   console.log("buy side prices: ", buySidePrice)
     //   expectedRateBuy = buySidePrice.expectedRate;
     //   slippageRateBuy = buySidePrice.slippageRate;
@@ -218,7 +216,6 @@ export const fetchDaiRate =() => async (dispatch) =>{
 }
 
 
->>>>>>> vinay
 export const marketMakingSpreadChanged = value => dispatch => {
   return dispatch({
     type: actionTypes.MARKET_MAKING_SPREAD_CHANGED,
@@ -233,15 +230,6 @@ export const balanceRatioChanged = value => dispatch => {
   });
 };
 
-<<<<<<< HEAD
-
-export const manualAggressionChanged = value => dispatch => {
-  return dispatch({
-    type: actionTypes.MANUAL_AGGRESSION_CHANGED,
-    payload: value
-  });
-};
-=======
 export const balancingAggressionChanged = (value) => (dispatch) => {
     return dispatch({
         type: actionTypes.BALANCING_AGGRESSION_CHANGED,
@@ -255,7 +243,6 @@ export const manualAggressionChanged = (value) => (dispatch) => {
         payload: value
     })
 }
->>>>>>> vinay
 
 export const startTradingBot = (percentage, avgPrice, ethEquivalent) => async (dispatch) => {
     var ConversionRatesContract = await new web3.eth.Contract(conversionRateABI, CONVERSION_RATES_CONTRACT_ADDRESS);
@@ -465,3 +452,10 @@ export const balanceRatios = (balanceRatio, balancingAggressionFactor, etherBala
     )
     }
 };
+
+export const closeSnackbar = (value) => dispatch => {
+    return dispatch({
+        type: actionTypes.CLOSE_SNACKBAR,
+        payload: value
+    })
+}

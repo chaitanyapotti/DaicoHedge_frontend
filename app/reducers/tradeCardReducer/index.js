@@ -54,6 +54,15 @@ export default function TradeCardData(state = initialStates, action) {
       };
     }
 
+    case actionTypes.CLOSE_SNACKBAR: {
+      return {
+        ...state,
+        manualEthOffloadingStarted: false,
+        manualDaiOffloadingStarted: false,
+        daiRatioBalancingStarted: false
+      };
+    }
+
     case actionTypes.BALANCING_AGGRESSION_CHANGED: {
       return {
         ...state,
@@ -90,8 +99,7 @@ export default function TradeCardData(state = initialStates, action) {
       return {
         ...state,
         manualEthOffloadingStarted: true,
-        currentStrategy:
-          `Manual ETH offload: ${  state.manualEthAmount  } ETH`,
+        currentStrategy: `Manual ETH offload: ${state.manualEthAmount} ETH`,
         currentStrategyCode: 1
       };
     }
@@ -100,8 +108,7 @@ export default function TradeCardData(state = initialStates, action) {
       return {
         ...state,
         manualEthOffloadingStarted: false,
-        currentStrategy:
-          `Manual ETH offload: ${  state.manualEthAmount  } ETH`,
+        currentStrategy: `Manual ETH offload: ${state.manualEthAmount} ETH`,
         currentStrategyCode: 1
       };
     }
@@ -110,8 +117,7 @@ export default function TradeCardData(state = initialStates, action) {
       return {
         ...state,
         manualDaiOffloadingStarted: true,
-        currentStrategy:
-          `Manual DAI offload: ${  state.manualDaiAmount  } DAI`,
+        currentStrategy: `Manual DAI offload: ${state.manualDaiAmount} DAI`,
         currentStrategyCode: 1
       };
     }
@@ -120,8 +126,7 @@ export default function TradeCardData(state = initialStates, action) {
       return {
         ...state,
         manualDaiOffloadingStarted: false,
-        currentStrategy:
-          `Manual DAI offload: ${  state.manualDaiAmount  } DAI`,
+        currentStrategy: `Manual DAI offload: ${state.manualDaiAmount} DAI`,
         currentStrategyCode: 1
       };
     }
@@ -130,8 +135,7 @@ export default function TradeCardData(state = initialStates, action) {
       return {
         ...state,
         daiRatioBalancingStarted: true,
-        currentStrategy:
-          `DAI-ETH Ratio Balacing: ${  state.balanceRatio  } Ratio`,
+        currentStrategy: `DAI-ETH Ratio Balacing: ${state.balanceRatio} Ratio`,
         currentStrategyCode: 2
       };
     }
@@ -140,8 +144,7 @@ export default function TradeCardData(state = initialStates, action) {
       return {
         ...state,
         daiRatioBalancingStarted: false,
-        currentStrategy:
-          `DAI-ETH Ratio Balacing: ${  state.balanceRatio  } Ratio`,
+        currentStrategy: `DAI-ETH Ratio Balacing: ${state.balanceRatio} Ratio`,
         currentStrategyCode: 2
       };
     }
