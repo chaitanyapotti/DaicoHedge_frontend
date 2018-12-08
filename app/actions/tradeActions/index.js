@@ -19,6 +19,32 @@ const NetworkProxyInstance = new web3.eth.Contract(
   KYBER_NETWORK_PROXY_ADDRESS
 );
 
+export const checkHedging = (spreadPercentage, balanceRatio, balancingAggressionFactor, avgPrice, manualAggressionFactor,
+     botStartedSuccessfully, currentStrategy, currentStrategyCode, etherBalance, daiBalance, current_ask, current_bid) => async (dispatch) => {
+        console.log("running hedge")
+        switch (currentStrategyCode) {
+            case 1:{
+                if (manualEthAmount>0){
+                    startManualEthHedging(current_ask, current_bid, manualAggressionFactor, parseInt(manualEthAmount*Math.pow(10, 18)))
+                }
+                if (manualDaiAmount>0){
+                    startManualDaiHedging(current_ask, current_bid, manualAggressionFactor, parseInt(manualDaiAmount*avgPrice*Math.pow(10, 18)))
+                }
+                break;
+            }           
+            case 2: {
+                balanceRatios(balanceRatio, balancingAggressionFactor, etherBalance, daiBalance, avgPrice, current_ask, current_bid)
+                break;
+            }
+            case 3: {
+                startTradingBot(spreadPercentage, avgPrice, etherBalance + daiBalance*avgPrice)
+                break;
+            }
+            default:
+                break;
+        } 
+}
+
 export const manualEthChanged = (value) => (dispatch) => {
     return dispatch({
         type: actionTypes.MANUAL_ETHER_CHANGED,

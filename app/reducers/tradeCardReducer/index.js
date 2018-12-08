@@ -1,23 +1,23 @@
 import actionTypes from '../../action_types';
 
 const initialStates = {
-  spreadPercentage: 0,
-  balanceRatio: 0,
-  balancingAggressionFactor: 1,
-  manualAggressionFactor: 1,
-  withdrawalAmount: 0,
-  current_ask: 0,
-  current_bid: 0,
-  avgPrice: 0,
-  botStartedSuccessfully: false,
-  currentStrategy: '',
-  currentStrategyCode: 0,
-  manualEthAmount: 0,
-  manualDaiAmount: 0,
-  manualEthOffloadingStarted: false,
-  manualDaiOffloadingStarted: false,
-  daiRatioBalancingStarted: false
-};
+    spreadPercentage : 0,
+    balanceRatio: 0,
+    balancingAggressionFactor: 1, 
+    manualAggressionFactor: 1,
+    withdrawalAmount: 0,
+    current_ask: 0,
+    current_bid: 0,
+    avgPrice: 0,
+    botStartedSuccessfully: false,
+    currentStrategy: "",
+    currentStrategyCode: 0, 
+    manualEthAmount: 0, 
+    manualDaiAmount: 0,
+    manualEthOffloadingStarted: false,
+    manualDaiOffloadingStarted: false,
+    daiRatioBalancingStarted: false
+}
 
 export default function TradeCardData(state = initialStates, action) {
   switch (action.type) {
@@ -29,15 +29,12 @@ export default function TradeCardData(state = initialStates, action) {
     }
 
     case actionTypes.DAI_PRICES: {
-      console.log('DAI wla: ', action.payload);
-      const { current_ask, current_bid } = action.payload || {};
-      const avgPrice = (current_ask + current_bid) / 2;
-      return {
-        ...state,
-        avgPrice,
-        current_ask,
-        current_bid
-      };
+        console.log("DAI wla: ",  action.payload)
+        const { current_ask, current_bid } = action.payload || {}
+        let avgPrice = (current_ask + current_bid)/2
+        return {
+            ...state, avgPrice: avgPrice, current_ask: current_ask, current_bid: current_bid
+        }
     }
 
     case actionTypes.MARKET_MAKING_SPREAD_CHANGED: {
