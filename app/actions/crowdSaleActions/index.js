@@ -8,7 +8,10 @@ export const roundInfoReceived = data => ({
 });
 
 export const getRoundDetails = () => async dispatch => {
-  const instance = await contractInstance(config.crowdsale_contract_address);
+  const instance = await contractInstance(
+    'CrowdSale',
+    config.crowdsale_contract_address
+  );
   const roundDetails = await instance.methods.roundDetails().call();
   dispatch(roundInfoReceived(roundDetails));
 };
