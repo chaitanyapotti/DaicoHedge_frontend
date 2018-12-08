@@ -7,7 +7,7 @@ export const roundInfoReceived = data => ({
   type: actionTypes.ROUND_INFO_RECEIVED
 });
 
-export const getRoundDetails = contractAddress => async dispatch => {
+export const getRoundDetails = () => async dispatch => {
   const instance = await contractInstance(config.crowdsale_contract_address);
   const roundDetails = await instance.methods.roundDetails().call();
   dispatch(roundInfoReceived(roundDetails));
