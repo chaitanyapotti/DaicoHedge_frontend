@@ -7,7 +7,7 @@ import { CustomCard } from '../CustomMUI/CustomCardComponent';
 import { CustomButton } from '../CustomMUI/CustomButton';
 import { CustomTextField } from '../CustomMUI/CustomTextField';
 import RCSlider from '../Common/RCSlider';
-import { marketMakingSpreadChanged, startTradingBot, balanceRatios, balanceRatioChanged, balancingAggressionChanged, fetchDaiRate } from "../../actions/tradeActions";
+import { marketMakingSpreadChanged, startTradingBot, balanceRatios, balanceRatioChanged, balancingAggressionChanged, fetchDaiRate, manualAggressionChanged } from "../../actions/tradeActions";
  
 
 const styles = theme => ({
@@ -27,7 +27,7 @@ class MarketMaking extends Component {
   };
 
   startTradingBotAction = () => {
-    this.props.dispatch(startTradingBot(this.props.spreadPercentage));
+    this.props.dispatch(startTradingBot(this.props.spreadPercentage, this.props.avgPrice));
   };
 
   render() {
@@ -45,11 +45,12 @@ class MarketMaking extends Component {
           <Grid className="text--center" item lg={6}>
             <span>
               <CustomButton onClick={this.startTradingBotAction}>
-                Start Bot
+                Initiate Bot
               </CustomButton>
             </span>
           </Grid>
         </Grid>
+        <div className="push-half--top">1 ETH = {(1/this.props.avgPrice).toFixed(2)} DAI </div>
       </div>
     );
   }
@@ -120,13 +121,13 @@ class DAIRatio extends Component {
           <Grid className="text--center push--top" item lg={3}>
             <span>
               <CustomButton onClick={this.startBalancingRatio}>
-                Confirm Trade
+                Start Hedging
               </CustomButton>
             </span>
           </Grid>
         </Grid>
 
-        <div className="push-half--top">1 Eth = 84.24 DAI </div>
+        <div className="push-half--top">1 ETH = {(1/this.props.avgPrice).toFixed(2)} DAI </div>
         <div className="push-half--top">
           Your portfolio will gradually get rebalanced until {this.props.balanceRatio}% of its value
           is in DAI
@@ -158,7 +159,7 @@ class ManualData extends Component {
         </Grid>
         <Grid className="text--center" item lg={6}>
           <span>
-            <CustomButton>Confirm Trade</CustomButton>
+            <CustomButton>Start Hedging</CustomButton>
           </span>
         </Grid>
       </Grid>
@@ -182,11 +183,12 @@ class ManualData extends Component {
           </span>
         </Grid>
       </Grid>
-
-      <div className="push-half--top">1 Eth = 84.24 DAI </div>
     </div>
   );
 
+  onChangeManualAggression  = value => {
+    this.props.dispatch(manualAggressionChanged(value));
+  };
   render() {
     const { value } = this.state || {};
     // const { classes } = this.props || {};
@@ -203,6 +205,35 @@ class ManualData extends Component {
         </Tabs>
         {value === 0 && this.ConvertDai()}
         {value === 1 && this.ConvertEth()}
+        <div>
+        <span>
+              <RCSlider
+                onChange={this.onChangeManualAggression}
+                value={this.props.manualAggressionFactor}
+                min={1}
+                max={5}
+                step={1}
+                dots
+                dotStyle={{ borderColor: '#ff839b' }}
+                activeDotStyle={{ borderColor: '#ff839b' }}
+                minimumTrackStyle={{ backgroundColor: '#ff839b' }}
+                handleStyle={{
+                  borderColor: '#ff839b',
+                  border: 'solid 2px #ff839b',
+                  '&:active': {
+                    boxShadow: '0 0 0 5px #ff839b'
+                  }
+                }}
+              />
+              <div>
+                Aggression Level :{' '}
+                <span className="text--secondary">
+                  {this.props.manualAggressionFactor}
+                </span>
+              </div>
+            </span>
+        </div>
+        <div className="push-half--top">1 ETH = {(1/this.props.avgPrice).toFixed(2)} DAI </div>
       </div>
     );
   }
@@ -210,7 +241,7 @@ class ManualData extends Component {
 
 class TradeCard extends Component {
   state = {
-    value: 1
+    value: 2
   };
 
   componentDidMount(){
@@ -248,7 +279,7 @@ class TradeCard extends Component {
           </Grid>
           <Divider />
           <div style={{ padding: '20px 40px 40px' }}>
-            {value === 0 && <ManualData />}
+            {value === 0 && <ManualDataConnected />}
             {value === 1 && <DAIRatioConnected />}
             {value === 2 && <MarketMakingConnected />}
           </div>
@@ -267,17 +298,20 @@ class TradeCard extends Component {
 //   );
 
 const mapStatesToProps = state => {
-  const { spreadPercentage, balanceRatio, balancingAggressionFactor } =
+  const { spreadPercentage, balanceRatio, balancingAggressionFactor, avgPrice, manualAggressionFactor } =
     state.TradeCardData || {};
   return {
     spreadPercentage,
     balanceRatio,
-    balancingAggressionFactor
+    balancingAggressionFactor, 
+    avgPrice,
+    manualAggressionFactor
   };
 };
 
 const myConnector = connect(mapStatesToProps);
 const MarketMakingConnected = myConnector(MarketMaking);
 const DAIRatioConnected = myConnector(DAIRatio);
+const ManualDataConnected = myConnector(ManualData);
 
 export default withStyles(styles)(connect(mapStatesToProps)(TradeCard));

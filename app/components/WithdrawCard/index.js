@@ -36,6 +36,9 @@ class WithdrawCard extends React.Component {
               </span>
             </Grid>
           </Grid>
+          <div className="push-half--top">Equivalent to <span className="text--secondary">{(this.props.withdrawalAmount)*(1/this.props.avgPrice).toFixed(2)} DAI</span>  </div>
+          <br/>
+          <div>You will get <span className="text--secondary">{this.props.withdrawalAmount-0.2*this.props.withdrawalAmount} ETH</span> and <span className="text--secondary"> {((0.2*this.props.withdrawalAmount)*(1/this.props.avgPrice)).toFixed(2)} DAI</span>.</div>
         </CustomCard>
       </Grid>
     );
@@ -45,10 +48,12 @@ class WithdrawCard extends React.Component {
 
 const mapStatesToProps = state => {
   const {
-    withdrawalAmount
+    withdrawalAmount, 
+    avgPrice
   } = state.TradeCardData || {};
   return {
-    withdrawalAmount
+    withdrawalAmount,
+    avgPrice
   };
 };
 

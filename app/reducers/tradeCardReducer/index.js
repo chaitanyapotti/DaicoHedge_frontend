@@ -4,8 +4,12 @@ const initialStates = {
     spreadPercentage : 0,
     balanceRatio: 0,
     balancingAggressionFactor: 1, 
-    daiPrices: 0,
-    withdrawalAmount: 0
+    manualAggressionFactor: 1,
+    withdrawalAmount: 0,
+    current_ask: 0,
+    current_bid: 0,
+    avgPrice: 0,
+
 }
 
 export default function TradeCardData(state=initialStates, action) {
@@ -19,8 +23,11 @@ export default function TradeCardData(state=initialStates, action) {
     }
 
     case actionTypes.DAI_PRICES: {
+        console.log("DAI wla: ",  action.payload)
+        const { current_ask, current_bid } = action.payload || {}
+        let avgPrice = (current_ask + current_bid)/2
         return {
-            ...state, daiPrices: action.payload
+            ...state, avgPrice: avgPrice, 
         }
     }
 
@@ -39,6 +46,12 @@ export default function TradeCardData(state=initialStates, action) {
     case actionTypes.BALANCING_AGGRESSION_CHANGED: {
         return {
             ...state, balancingAggressionFactor: action.payload
+        }
+    }
+
+    case actionTypes.MANUAL_AGGRESSION_CHANGED: {
+        return {
+            ...state, manualAggressionFactor: action.payload
         }
     }
 
