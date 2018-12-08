@@ -1,5 +1,3 @@
-import 'rc-slider/assets/index.css';
-
 import React from 'react';
 import Slider from 'rc-slider';
 
