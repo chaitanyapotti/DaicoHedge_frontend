@@ -156,3 +156,91 @@ export const getVoteHistogram = () => async dispatch => {
     console.log(error);
   }
 };
+
+export const getSpendCurve = () => async dispatch => {
+  try {
+    contractInstance('PollFactory', config.pollFactory_contract_address)
+      .then(async instance => {
+        const promiseArray = [];
+        const increaseTapArrayPromise = instance.getPastEvents('TapIncreased', {
+          filter: {},
+          fromBlock: 0,
+          toBlock: 'latest'
+        });
+        const withdrawArrayPromise = instance.getPastEvents('Withdraw', {
+          filter: {},
+          fromBlock: 0,
+          toBlock: 'latest'
+        });
+        const crowdSaleInstance = await contractInstance(
+          'CrowdSale',
+          req.query.crowdsaleaddress
+        );
+        const contributionEventArrayPromise = crowdSaleInstance.getPastEvents(
+          'LogContribution',
+          {
+            filter: {},
+            fromBlock: 0,
+            toBlock: 'latest'
+          }
+        );
+        promiseArray.push(increaseTapArrayPromise);
+        promiseArray.push(withdrawArrayPromise);
+        promiseArray.push(contributionEventArrayPromise);
+        Promise.all(promiseArray).then(async result => {
+          try {
+            const increaseTapArray = result[0];
+            const withdrawArray = result[1];
+            const contributionArray = result[4];
+            const tapData = [];
+            const withdrawData = [];
+            const contributionData = [];
+            for (let index = 0; index < increaseTapArray.length; index++) {
+              const item = increaseTapArray[index];
+              const { returnValues, blockNumber } = item || {};
+              const { currentTap } = returnValues || {};
+              const blockObject = await web3.eth.getBlock(blockNumber);
+              const { timestamp } = blockObject;
+              tapData.push({ timestamp: timestamp, amount: currentTap });
+            }
+            for (let index = 0; index < withdrawArray.length; index++) {
+              const item = withdrawArray[index];
+              const { returnValues, blockNumber } = item || {};
+              const { amountWei } = returnValues || {};
+              const blockObject = await web3.eth.getBlock(blockNumber);
+              const { timestamp } = blockObject;
+              const amount = amountWei
+                ? await web3.utils.fromWei(amountWei.toString(), 'ether')
+                : 0;
+              withdrawData.push({ timestamp: timestamp, amount: amount });
+            }
+            for (let index = 0; index < contributionArray.length; index++) {
+              const item = contributionArray[index];
+              const { returnValues, blockNumber } = item || {};
+              const { etherAmount } = returnValues || {};
+              const blockObject = await web3.eth.getBlock(blockNumber);
+              const { timestamp } = blockObject;
+              const amount = etherAmount
+                ? await web3.utils.fromWei(etherAmount.toString(), 'ether')
+                : 0;
+              contributionData.push({ timestamp: timestamp, amount: amount });
+            }
+            dispatch({
+              tapData: tapData,
+              withdrawData: withdrawData,
+              withdrawXfrData: withdrawXfrData,
+              allXfrData: allXfrData,
+              contributionData: contributionData
+            });
+          } catch (err) {
+            console.log(err);
+          }
+        });
+      })
+      .catch(err => {
+        console.log(err.message);
+      });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
