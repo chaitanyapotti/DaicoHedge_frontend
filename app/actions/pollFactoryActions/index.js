@@ -248,3 +248,66 @@ export const getSpendCurve = () => async dispatch => {
     console.log(error.message);
   }
 };
+
+export const withdrawAmount = amount => dispatch => {
+  const pba = await web3.eth.getAccounts();
+  const instance = await contractInstance(
+    'PollFactory',
+    config.pollFactory_contract_address
+  );
+  const weiAmount = await web3.utils.toWei(amount);
+  const txData = await instance.methods.withdrawAmount(weiAmount).encodeABI();
+  const gasPrice = await web3.eth.getGasPrice();
+  var signedTx = await web3.eth.accounts.signTransaction(
+    {
+      from: pba[0],
+      to: config.pollFactory_contract_address,
+      value: 0,
+      data: txData,
+      gas: 1000000, //gasLimit
+      gasPrice: gasPrice
+    },
+    config.SENDER_PRIVATE_KEY
+  );
+  let txHash = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
+};
+
+export const getRefund = () => dispatch => {
+  const instance = await contractInstance(
+    'PollFactory',
+    config.pollFactory_contract_address
+  );
+  const treasuryRound = instance.methods.treasuryState().call();
+  if (treasuryRound === '1') {
+    const txData = await instance.methods.refundBySoftcapFail().encodeABI();
+    const gasPrice = await web3.eth.getGasPrice();
+    var signedTx = await web3.eth.accounts.signTransaction(
+      {
+        from: pba[0],
+        to: config.pollFactory_contract_address,
+        value: 0,
+        data: txData,
+        gas: 1000000, //gasLimit
+        gasPrice: gasPrice
+      },
+      config.SENDER_PRIVATE_KEY
+    );
+    let txHash = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
+  }
+  if (treasuryRound === '3') {
+    const txData = await instance.methods.refundByKill().encodeABI();
+    const gasPrice = await web3.eth.getGasPrice();
+    var signedTx = await web3.eth.accounts.signTransaction(
+      {
+        from: pba[0],
+        to: config.pollFactory_contract_address,
+        value: 0,
+        data: txData,
+        gas: 1000000, //gasLimit
+        gasPrice: gasPrice
+      },
+      config.SENDER_PRIVATE_KEY
+    );
+    let txHash = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
+  }
+};
