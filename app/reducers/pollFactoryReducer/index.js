@@ -7,7 +7,9 @@ const initialStates = {
   etherBalance: 0,
   daiBalance: 0,
   voteHistogramData: {},
-  spendingCurveData: {}
+  spendingCurveData: {},
+  killRefund: false,
+  crowdSaleRefund: false
 };
 
 export default (state = initialStates, action) => {
@@ -51,9 +53,24 @@ export default (state = initialStates, action) => {
 
     case actionTypes.SPENDING_CURVE_RECEIVED: {
       const { rec } = action.payload;
+      console.log('spend rdeucer', rec);
       return {
         ...state,
         spendingCurveData: rec
+      };
+    }
+
+    case actionTypes.KILL_REFUND: {
+      return {
+        ...state,
+        killRefund: true
+      };
+    }
+
+    case actionTypes.CROWD_SALE_REFUND: {
+      return {
+        ...state,
+        crowdSaleRefund: true
       };
     }
 

@@ -76,9 +76,9 @@ class ProjectName extends React.Component {
             <Grid container>
               <Grid item lg={5}>
                 <div className="txt-bold">
-                  Kill Consensue:{' '}
+                  Kill Consensus:{' '}
                   <span className="text--secondary">
-                    {killConsensus} ETH/month
+                    {isNaN(killConsensus) ? 0 : killConsensus} ETH/month
                   </span>
                 </div>
               </Grid>

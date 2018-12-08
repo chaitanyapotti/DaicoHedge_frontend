@@ -32,14 +32,14 @@ class AppContainer extends Component {
       <div>
         <Tabs value={value} onChange={this.handleChange}>
           <Tab className={classes.tabRoot} label="Issuer Page" />
-          <Tab className={classes.tabRoot} label="Investors Page" />
+          {/* <Tab className={classes.tabRoot} label="Investors Page" /> */}
           <Tab className={classes.tabRoot} label="Refund Page" />
         </Tabs>
 
         <div style={{ padding: '20px 40px 40px' }}>
           {value === 0 && <HomePage />}
-          {value === 1 && <InvestorPage />}
-          {value === 2 && <RefundPage />}
+          {value === 1 && <RefundPage />}
+          {/* {value === 2 && <RefundPage />} */}
         </div>
       </div>
     );

@@ -296,6 +296,7 @@ export const getRefund = () => async dispatch => {
       config.SENDER_PRIVATE_KEY
     );
     let txHash = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
+    dispatch({type: actionTypes.CROWD_SALE_REFUND})
   }
   if (treasuryRound === '3') {
     const txData = await instance.methods.refundByKill().encodeABI();
@@ -312,5 +313,6 @@ export const getRefund = () => async dispatch => {
       config.SENDER_PRIVATE_KEY
     );
     let txHash = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
+    dispatch({type: actionTypes.KILL_REFUND})
   }
 };

@@ -20,7 +20,7 @@ class Investor extends Component<Props> {
   props: Props;
 
   componentDidMount() {
-    this.props.dispatch(getVoteHistogram());
+    // this.props.dispatch(getVoteHistogram());
     this.props.dispatch(getSpendCurve());
   }
 
