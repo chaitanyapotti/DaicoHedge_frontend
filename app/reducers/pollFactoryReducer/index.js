@@ -40,7 +40,7 @@ export default (state = initialStates, action) => {
         daiBalance
       };
     }
-    case actionTypes.REMAINING_BALANCE_RECEIVED: {
+    case actionTypes.VOTE_HISTOGRAM_RECEIVED: {
       const { rec } = action.payload;
       return {
         ...state,

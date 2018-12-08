@@ -9,6 +9,7 @@ import ProjectName from '../ProjectName';
 import ProjectDetails from '../ProjectDetails';
 import VoteHistogram from '../VoteHistogram';
 import { getVoteHistogram } from '../../actions/pollFactoryActions';
+import { CustomCard } from '../CustomMUI/CustomCardComponent';
 
 type Props = {};
 
@@ -21,13 +22,13 @@ class Investor extends Component<Props> {
 
   render() {
     const { voteHistogramData } = this.props || {};
-    console.log('djdssdsdsds', voteHistogramData);
     return (
       <Grid container>
         <MasonaryLayout>
           <ProjectName />
-          <ProjectDetails />
-          <VoteHistogram voteHistogramData={voteHistogramData} />
+          <CustomCard className="card-brdr" style={{ padding: '50px' }}>
+            <VoteHistogram voteHistogramData={voteHistogramData} />
+          </CustomCard>
         </MasonaryLayout>
       </Grid>
     );
@@ -37,6 +38,7 @@ class Investor extends Component<Props> {
 const mapStatesToProps = state => {
   const { PollFactoryReducer } = state || {};
   const { voteHistogramData } = PollFactoryReducer || {};
+
   return {
     voteHistogramData
   };
