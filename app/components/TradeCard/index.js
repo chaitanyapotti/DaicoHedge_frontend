@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {connect} from "react-redux";
+import { connect } from 'react-redux';
 // import  {bindActionCreators } from "redux";
 import { Grid, Tabs, Tab, Input, Button, Divider } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
@@ -7,8 +7,13 @@ import { CustomCard } from '../CustomMUI/CustomCardComponent';
 import { CustomButton } from '../CustomMUI/CustomButton';
 import { CustomTextField } from '../CustomMUI/CustomTextField';
 import RCSlider from '../Common/RCSlider';
-import { marketMakingSpreadChanged, startTradingBot, balanceRatios, balanceRatioChanged, balancingAggressionChanged } from "../../actions/tradeActions";
- 
+import {
+  marketMakingSpreadChanged,
+  startTradingBot,
+  balanceRatios,
+  balanceRatioChanged,
+  balancingAggressionChanged
+} from '../../actions/tradeActions';
 
 const styles = theme => ({
   root: {
@@ -16,77 +21,112 @@ const styles = theme => ({
     backgroundColor: theme.palette.background.paper
   },
   tabRoot: {
-    minWidth: '80px'
+    minWidth: '80px',
+    textTransform: 'initial'
   }
 });
 
 class MarketMaking extends Component {
-
-  handleTextChange= (event) => {
-    this.props.dispatch(marketMakingSpreadChanged(event.target.value))
-  }
+  handleTextChange = event => {
+    this.props.dispatch(marketMakingSpreadChanged(event.target.value));
+  };
 
   startTradingBotAction = () => {
-    this.props.dispatch(startTradingBot(this.props.spreadPercentage)) 
-  }
+    this.props.dispatch(startTradingBot(this.props.spreadPercentage));
+  };
 
   render() {
     return (
-      <div>
-          <Grid container>
-            <Grid item lg={6}>
-              <CustomTextField
-                label="Spread Percentage"
-                value= {this.props.spreadPercentage}
-                fullWidth
-                onChange={this.handleTextChange}
-              />
-            </Grid>
-            <Grid className="text--center" item lg={6}>
-              <span>
-                <CustomButton onClick={this.startTradingBotAction}>Start Bot</CustomButton>
-              </span>
-            </Grid>
+      <div className="push--top">
+        <Grid container>
+          <Grid item lg={6}>
+            <CustomTextField
+              label="Spread Percentage"
+              value={this.props.spreadPercentage}
+              fullWidth
+              onChange={this.handleTextChange}
+            />
           </Grid>
+          <Grid className="text--center" item lg={6}>
+            <span>
+              <CustomButton onClick={this.startTradingBotAction}>
+                Start Bot
+              </CustomButton>
+            </span>
+          </Grid>
+        </Grid>
       </div>
-    )
+    );
   }
 }
 
 class DAIRatio extends Component {
-
-  onChangeBalanceRatio = (value) => {
-    this.props.dispatch(balanceRatioChanged(value))
-  }
+  onChangeBalanceRatio = value => {
+    this.props.dispatch(balanceRatioChanged(value));
+  };
 
   startBalancingRatio = () => {
-    this.props.dispatch(balanceRatios(this.props.balanceRatio))
-  }
+    this.props.dispatch(balanceRatios(this.props.balanceRatio));
+  };
 
-
-  onChangeBalancingAggression = (value) => {
-    this.props.dispatch(balancingAggressionChanged(value))
-  }
+  onChangeBalancingAggression = value => {
+    this.props.dispatch(balancingAggressionChanged(value));
+  };
 
   render() {
     return (
       <div className="push--top">
         <Grid container>
           <Grid item lg={9}>
-            <div>Balance Ratio</div>
-            <span> <RCSlider onChange={this.onChangeBalanceRatio} value={this.props.balanceRatio} /> {this.props.balanceRatio}</span> 
-          </Grid>
-          <Grid item lg={9}>
-          <div>Aggression Factor</div>
-          <span>
-          <RCSlider onChange={this.onChangeBalancingAggression} value={this.props.balancingAggressionFactor} min={1} max={5} step={1} dots/>
-          {this.props.balancingAggressionFactor}
-          </span>
-            
-          </Grid>
-          <Grid className="text--center" item lg={3}>
+            <div className="txt-bold">Balance Ratio</div>
             <span>
-              <CustomButton onClick={this.startBalancingRatio}>Confirm Trade</CustomButton>
+              <RCSlider
+                onChange={this.onChangeBalanceRatio}
+                value={this.props.balanceRatio}
+                minimumTrackStyle={{ backgroundColor: '#4ca9fc' }}
+              />
+              <div>
+                Percentage Of Portfolio in DAI :{' '}
+                <span className="text--secondary">
+                  {`${this.props.balanceRatio}%`}
+                </span>
+              </div>
+            </span>
+          </Grid>
+          <Grid className="push--top" item lg={9}>
+            <div className="txt-bold">Aggression Factor</div>
+            <span>
+              <RCSlider
+                onChange={this.onChangeBalancingAggression}
+                value={this.props.balancingAggressionFactor}
+                min={1}
+                max={5}
+                step={1}
+                dots
+                dotStyle={{ borderColor: '#ff839b' }}
+                activeDotStyle={{ borderColor: '#ff839b' }}
+                minimumTrackStyle={{ backgroundColor: '#ff839b' }}
+                handleStyle={{
+                  borderColor: '#ff839b',
+                  border: 'solid 2px #ff839b',
+                  '&:active': {
+                    boxShadow: '0 0 0 5px #ff839b'
+                  }
+                }}
+              />
+              <div>
+                Aggression Level :{' '}
+                <span className="text--secondary">
+                  {this.props.balancingAggressionFactor}
+                </span>
+              </div>
+            </span>
+          </Grid>
+          <Grid className="text--center push--top" item lg={3}>
+            <span>
+              <CustomButton onClick={this.startBalancingRatio}>
+                Confirm Trade
+              </CustomButton>
             </span>
           </Grid>
         </Grid>
@@ -208,10 +248,10 @@ class TradeCard extends Component {
             </Grid>
           </Grid>
           <Divider />
-          <div style={{ padding: '0 40px 40px' }}>
+          <div style={{ padding: '20px 40px 40px' }}>
             {value === 0 && <ManualData />}
             {value === 1 && <DAIRatioConnected />}
-            {value ===2 && <MarketMakingConnected />}
+            {value === 2 && <MarketMakingConnected />}
           </div>
         </CustomCard>
       </Grid>
@@ -228,11 +268,8 @@ class TradeCard extends Component {
 //   );
 
 const mapStatesToProps = state => {
-  const {
-    spreadPercentage,
-    balanceRatio,
-    balancingAggressionFactor
-  } = state.TradeCardData || {};
+  const { spreadPercentage, balanceRatio, balancingAggressionFactor } =
+    state.TradeCardData || {};
   return {
     spreadPercentage,
     balanceRatio,

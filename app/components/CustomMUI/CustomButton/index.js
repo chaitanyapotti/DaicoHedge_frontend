@@ -6,6 +6,8 @@ export const CustomButton = props => (
     className="btn bg--primary txt-p-vault txt-dddbld text--white"
     {...props}
   >
-    {props.children}
+    <div style={{ textTransform: 'initial', fontWeight: 'bold' }}>
+      {props.children}
+    </div>
   </Button>
 );

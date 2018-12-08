@@ -1,9 +1,11 @@
 import React from 'react';
 import { render } from 'react-dom';
+import { MuiThemeProvider } from '@material-ui/core/styles';
 import { AppContainer } from 'react-hot-loader';
 import Root from './containers/Root';
 import { configureStore, history } from './store/configureStore';
 import './static/css/app.global.css';
+import { theme } from './static/theme';
 
 const store = configureStore();
 
@@ -19,9 +21,11 @@ if (module.hot) {
     // eslint-disable-next-line global-require
     const NextRoot = require('./containers/Root').default;
     render(
-      <AppContainer>
-        <NextRoot store={store} history={history} />
-      </AppContainer>,
+      <MuiThemeProvider theme={theme}>
+        <AppContainer>
+          <NextRoot store={store} history={history} />
+        </AppContainer>
+      </MuiThemeProvider>,
       document.getElementById('root')
     );
   });
