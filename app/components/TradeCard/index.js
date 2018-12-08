@@ -8,6 +8,7 @@ import { CustomButton } from '../CustomMUI/CustomButton';
 import { CustomTextField } from '../CustomMUI/CustomTextField';
 import { getVoteHistogram } from '../../actions/pollFactoryActions';
 import RCSlider from '../Common/RCSlider';
+<<<<<<< HEAD
 import {
   marketMakingSpreadChanged,
   startTradingBot,
@@ -17,6 +18,11 @@ import {
   fetchDaiRate,
   manualAggressionChanged
 } from '../../actions/tradeActions';
+=======
+import { marketMakingSpreadChanged, startTradingBot, balanceRatios, balanceRatioChanged, balancingAggressionChanged, fetchDaiRate, manualAggressionChanged } from "../../actions/tradeActions";
+import { getRemainingBalance } from "../../actions/pollFactoryActions";
+ 
+>>>>>>> vinay
 
 const styles = theme => ({
   root: {
@@ -35,9 +41,13 @@ class MarketMaking extends Component {
   };
 
   startTradingBotAction = () => {
+<<<<<<< HEAD
     this.props.dispatch(
       startTradingBot(this.props.spreadPercentage, this.props.avgPrice)
     );
+=======
+    this.props.dispatch(startTradingBot(this.props.spreadPercentage, this.props.avgPrice, this.props.etherBalance + this.props.daiBalance/(this.props.avgPrice)));
+>>>>>>> vinay
   };
 
   render() {
@@ -260,9 +270,15 @@ class TradeCard extends Component {
     value: 2
   };
 
+<<<<<<< HEAD
   componentDidMount() {
     this.props.dispatch(fetchDaiRate());
     this.props.dispatch(getVoteHistogram());
+=======
+  componentDidMount(){
+    this.props.dispatch(fetchDaiRate())
+    this.props.dispatch(getRemainingBalance())
+>>>>>>> vinay
   }
 
   handleChange = (event, value) => {
@@ -315,6 +331,7 @@ class TradeCard extends Component {
 //   );
 
 const mapStatesToProps = state => {
+<<<<<<< HEAD
   const {
     spreadPercentage,
     balanceRatio,
@@ -322,12 +339,23 @@ const mapStatesToProps = state => {
     avgPrice,
     manualAggressionFactor
   } = state.TradeCardData || {};
+=======
+  const { spreadPercentage, balanceRatio, balancingAggressionFactor, avgPrice, manualAggressionFactor, botStartedSuccessfully, 
+    currentStrategy, currentStrategyCode } =
+    state.TradeCardData || {};
+  const { etherBalance, daiBalance } = state.PollFactoryReducer || {}
+>>>>>>> vinay
   return {
     spreadPercentage,
     balanceRatio,
     balancingAggressionFactor,
     avgPrice,
-    manualAggressionFactor
+    manualAggressionFactor,
+    etherBalance,
+    daiBalance,
+    botStartedSuccessfully,
+    currentStrategy,
+    currentStrategyCode
   };
 };
 

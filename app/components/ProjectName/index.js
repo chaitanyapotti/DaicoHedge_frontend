@@ -116,7 +116,7 @@ class ProjectName extends React.Component {
 const mapStatesToProps = state => {
   const { pollFactoryReducer } = state || {};
   const { killConsensus, tapConsensus, currentTap, etherBalance, daiBalance } =
-    pollFactoryReducer || {};
+    PollFactoryReducer || {};
 
   return {
     killConsensus,
