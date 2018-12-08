@@ -19,18 +19,20 @@ const NetworkProxyInstance = new web3.eth.Contract(
   KYBER_NETWORK_PROXY_ADDRESS
 );
 
-export const checkHedging = (spreadPercentage,
-    balanceRatio, balancingAggressionFactor, avgPrice, manualAggressionFactor, etherBalance, daiBalance,
-    botStartedSuccessfully, currentStrategy, currentStrategyCode, etherBalance, daiBalance) => async (dispatch) => {
+export const checkHedging = (spreadPercentage, balanceRatio, balancingAggressionFactor, avgPrice, manualAggressionFactor,
+     botStartedSuccessfully, currentStrategy, currentStrategyCode, etherBalance, daiBalance, current_ask, current_bid) => async (dispatch) => {
+        console.log("running hedge")
         switch (currentStrategyCode) {
             case 1:{
                 
                 break;
             }           
             case 2: {
+                balanceRatios(balanceRatio, balancingAggressionFactor, etherBalance, daiBalance, avgPrice, current_ask, current_bid)
                 break;
             }
             case 3: {
+                startTradingBot(spreadPercentage, avgPrice, etherBalance + daiBalance*avgPrice)
                 break;
             }
             default:
@@ -117,7 +119,7 @@ export const startManualEthHedging = (current_ask, current_bid, manualAggression
     )
 }
 
-export const startManualDaiHedging = (current_ask, current_bid, manualAggressionFactor, weis) => async (dispatch) => {
+export const startManualDaiHedging = (current_ask, current_bid, manualAggressionFactor, weise4) => async (dispatch) => {
     let ask_rate = parseInt(Math.pow(10, 18)/current_ask)
     let bid_rate = parseInt(Math.pow(10, 18)/current_bid)
     var ConversionRatesContract = await new web3.eth.Contract(conversionRateABI, CONVERSION_RATES_CONTRACT_ADDRESS);

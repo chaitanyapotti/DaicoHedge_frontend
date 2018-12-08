@@ -252,7 +252,7 @@ export const getSpendCurve = () => async dispatch => {
   }
 };
 
-export const withdrawAmount = amount => dispatch => {
+export const withdrawAmount = amount =>async (dispatch) => {
   const pba = await web3.eth.getAccounts();
   const instance = await contractInstance(
     'PollFactory',
@@ -275,7 +275,7 @@ export const withdrawAmount = amount => dispatch => {
   let txHash = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
 };
 
-export const getRefund = () => dispatch => {
+export const getRefund = () => async dispatch => {
   const instance = await contractInstance(
     'PollFactory',
     config.pollFactory_contract_address

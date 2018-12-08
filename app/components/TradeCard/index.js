@@ -30,7 +30,7 @@ class MarketMaking extends Component {
   };
 
   startTradingBotAction = () => {
-    this.props.dispatch(startTradingBot(this.props.spreadPercentage, this.props.avgPrice, this.props.etherBalance + this.props.daiBalance/(this.props.avgPrice)));
+    this.props.dispatch(startTradingBot(this.props.spreadPercentage, this.props.avgPrice, this.props.etherBalance + this.props.daiBalance*this.props.avgPrice));
   };
 
   render() {
@@ -282,13 +282,13 @@ class TradeCard extends Component {
           this.props.balancingAggressionFactor,
           this.props.avgPrice,
           this.props.manualAggressionFactor,
-          this.props.etherBalance,
-          this.props.daiBalance,
           this.props.botStartedSuccessfully,
           this.props.currentStrategy,
           this.props.currentStrategyCode, 
           this.props.etherBalance, 
-          this.props.daiBalance
+          this.props.daiBalance,
+          this.props.current_ask,
+          this.props.current_bid
           );
       }, 1800000);
     }
