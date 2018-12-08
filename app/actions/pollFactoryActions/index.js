@@ -39,7 +39,8 @@ export const getKillConsensus = () => async dispatch => {
   const killVoteDenominator = await pollInstance.methods
     .getVoterBaseDenominator()
     .call();
-  const killConsensus = (killVoteTally / killVoteDenominator) * 100;
+  const killConsensus =
+    (parseFloat(killVoteTally) / parseFloat(killVoteDenominator)) * 100;
   dispatch(killConsensusReceived(killConsensus));
 };
 
@@ -49,13 +50,16 @@ export const getTapConsensus = () => async dispatch => {
     config.pollFactory_contract_address
   );
   const tapPollAddress = await instance.methods.tapPoll().call();
-  const pollInstance = await contractInstance('IPoll', tapPollAddress);
-  const tapVoteTally = await pollInstance.methods.getVoteTally(0).call();
-  const tapVoteDenominator = await pollInstance.methods
-    .getVoterBaseDenominator()
-    .call();
-  const tapConsensus = (tapVoteTally / tapVoteDenominator) * 100;
-  dispatch(tapConsensusReceived(tapConsensus));
+  if (tapPollAddress !== '0x0000000000000000000000000000000000000000') {
+    const pollInstance = await contractInstance('IPoll', tapPollAddress);
+    const tapVoteTally = await pollInstance.methods.getVoteTally(0).call();
+    const tapVoteDenominator = await pollInstance.methods
+      .getVoterBaseDenominator()
+      .call();
+    const tapConsensus =
+      (parseFloat(tapVoteTally) / parseFloat(tapVoteDenominator)) * 100;
+    dispatch(tapConsensusReceived(tapConsensus));
+  }
 };
 
 export const getCurrentTap = () => async dispatch => {
@@ -76,7 +80,7 @@ export const getRemainingBalance = () => async dispatch => {
     config.daiToken_contract_address
   );
   const daiBalance = await web3.utils.fromWei(
-    daiInstance.methods.balanceOf(config.pollFactory_contract_address)
+    await daiInstance.methods.balanceOf(config.pollFactory_contract_address)
   );
   dispatch(remainingBalanceReceived(etherBalance, daiBalance));
 };
@@ -245,5 +249,68 @@ export const getSpendCurve = () => async dispatch => {
       });
   } catch (error) {
     console.log(error.message);
+  }
+};
+
+export const withdrawAmount = amount => dispatch => {
+  const pba = await web3.eth.getAccounts();
+  const instance = await contractInstance(
+    'PollFactory',
+    config.pollFactory_contract_address
+  );
+  const weiAmount = await web3.utils.toWei(amount);
+  const txData = await instance.methods.withdrawAmount(weiAmount).encodeABI();
+  const gasPrice = await web3.eth.getGasPrice();
+  var signedTx = await web3.eth.accounts.signTransaction(
+    {
+      from: pba[0],
+      to: config.pollFactory_contract_address,
+      value: 0,
+      data: txData,
+      gas: 1000000, //gasLimit
+      gasPrice: gasPrice
+    },
+    config.SENDER_PRIVATE_KEY
+  );
+  let txHash = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
+};
+
+export const getRefund = () => dispatch => {
+  const instance = await contractInstance(
+    'PollFactory',
+    config.pollFactory_contract_address
+  );
+  const treasuryRound = instance.methods.treasuryState().call();
+  if (treasuryRound === '1') {
+    const txData = await instance.methods.refundBySoftcapFail().encodeABI();
+    const gasPrice = await web3.eth.getGasPrice();
+    var signedTx = await web3.eth.accounts.signTransaction(
+      {
+        from: pba[0],
+        to: config.pollFactory_contract_address,
+        value: 0,
+        data: txData,
+        gas: 1000000, //gasLimit
+        gasPrice: gasPrice
+      },
+      config.SENDER_PRIVATE_KEY
+    );
+    let txHash = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
+  }
+  if (treasuryRound === '3') {
+    const txData = await instance.methods.refundByKill().encodeABI();
+    const gasPrice = await web3.eth.getGasPrice();
+    var signedTx = await web3.eth.accounts.signTransaction(
+      {
+        from: pba[0],
+        to: config.pollFactory_contract_address,
+        value: 0,
+        data: txData,
+        gas: 1000000, //gasLimit
+        gasPrice: gasPrice
+      },
+      config.SENDER_PRIVATE_KEY
+    );
+    let txHash = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
   }
 };
