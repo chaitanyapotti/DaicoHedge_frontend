@@ -277,7 +277,7 @@ class TradeCard extends Component {
   initCheckOnHedging() {
     if (!this.interval) {
       this.interval = setInterval(() => {
-        checkHedging(this.props.spreadPercentage,
+        this.props.dispatch(checkHedging(this.props.spreadPercentage,
           this.props.balanceRatio,
           this.props.balancingAggressionFactor,
           this.props.avgPrice,
@@ -289,7 +289,7 @@ class TradeCard extends Component {
           this.props.daiBalance,
           this.props.current_ask,
           this.props.current_bid
-          );
+          ));
       }, 1800000);
     }
   }

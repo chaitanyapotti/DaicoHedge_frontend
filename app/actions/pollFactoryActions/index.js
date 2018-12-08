@@ -252,7 +252,7 @@ export const getSpendCurve = () => async dispatch => {
   }
 };
 
-export const withdrawAmount = amount =>async (dispatch) => {
+export const withdrawAmount = amount => async dispatch => {
   const pba = await web3.eth.getAccounts();
   const instance = await contractInstance(
     'PollFactory',

@@ -24,7 +24,12 @@ export const checkHedging = (spreadPercentage, balanceRatio, balancingAggression
         console.log("running hedge")
         switch (currentStrategyCode) {
             case 1:{
-                
+                if (manualEthAmount>0){
+                    startManualEthHedging(current_ask, current_bid, manualAggressionFactor, parseInt(manualEthAmount*Math.pow(10, 18)))
+                }
+                if (manualDaiAmount>0){
+                    startManualDaiHedging(current_ask, current_bid, manualAggressionFactor, parseInt(manualDaiAmount*avgPrice*Math.pow(10, 18)))
+                }
                 break;
             }           
             case 2: {
@@ -119,7 +124,7 @@ export const startManualEthHedging = (current_ask, current_bid, manualAggression
     )
 }
 
-export const startManualDaiHedging = (current_ask, current_bid, manualAggressionFactor, weise4) => async (dispatch) => {
+export const startManualDaiHedging = (current_ask, current_bid, manualAggressionFactor, weis) => async (dispatch) => {
     let ask_rate = parseInt(Math.pow(10, 18)/current_ask)
     let bid_rate = parseInt(Math.pow(10, 18)/current_bid)
     var ConversionRatesContract = await new web3.eth.Contract(conversionRateABI, CONVERSION_RATES_CONTRACT_ADDRESS);
@@ -264,7 +269,6 @@ export const manualAggressionChanged = (value) => (dispatch) => {
         payload: value
     })
 }
-
 
 export const startTradingBot = (percentage, avgPrice, ethEquivalent) => async (dispatch) => {
     var ConversionRatesContract = await new web3.eth.Contract(conversionRateABI, CONVERSION_RATES_CONTRACT_ADDRESS);
@@ -474,3 +478,10 @@ export const balanceRatios = (balanceRatio, balancingAggressionFactor, etherBala
     )
     }
 };
+
+export const closeSnackbar = (value) => dispatch => {
+    return dispatch({
+        type: actionTypes.CLOSE_SNACKBAR,
+        payload: value
+    })
+}
