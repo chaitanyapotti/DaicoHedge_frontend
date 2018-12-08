@@ -1,9 +1,11 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
+import { CustomButton } from '../../CustomMUI/CustomButton';
 
 const styles = {
   root: {
@@ -25,6 +27,9 @@ function Header(props) {
             DAICO Manager (My DAICO Mdc)
           </div>
         </Toolbar>
+        {/* <Link to="/investor">
+          <CustomButton>Investor Page</CustomButton>
+        </Link> */}
       </AppBar>
     </div>
   );
