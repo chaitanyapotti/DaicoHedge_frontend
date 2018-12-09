@@ -6,14 +6,35 @@ import { CustomCard } from '../CustomMUI/CustomCardComponent';
 import { CustomButton } from '../CustomMUI/CustomButton';
 import { getRefund } from '../../actions/pollFactoryActions';
 import CustomSnackBar from '../CustomMUI/CustomSnackBar';
+import {
+  getUserTokenBalance,
+  getPollFactoryDai,
+  getPollFactoryEther,
+  getRemainingBalance
+} from '../../actions/pollFactoryActions';
 
 type Props = {};
 
 class RefundPage extends Component<Props> {
   props: Props;
 
+  componentDidMount() {
+    this.props.dispatch(getUserTokenBalance());
+    this.props.dispatch(getPollFactoryDai());
+    this.props.dispatch(getPollFactoryEther());
+    this.props.dispatch(getRemainingBalance());
+  }
+
   render() {
-    const { crowdSaleRefund, killRefund } = this.props || {};
+    const {
+      crowdSaleRefund,
+      killRefund,
+      pollFactDai,
+      pollFactEther,
+      userTokenBalance,
+      totalTokenSupply
+    } = this.props || {};
+    console.log('props', this.props);
     return (
       <div className="push--top">
         <CustomCard className="card-brdr" style={{ padding: '50px' }}>
@@ -37,10 +58,21 @@ class RefundPage extends Component<Props> {
   }
 }
 const mapStatesToProps = state => {
-  const { crowdSaleRefund, killRefund } = state.PollFactoryReducer || {};
+  const {
+    crowdSaleRefund,
+    killRefund,
+    pollFactEther,
+    pollFactDai,
+    userTokenBalance,
+    totalTokenSupply
+  } = state.PollFactoryReducer || {};
   return {
     crowdSaleRefund,
-    killRefund
+    killRefund,
+    pollFactDai,
+    pollFactEther,
+    userTokenBalance,
+    totalTokenSupply
   };
 };
 

@@ -9,7 +9,11 @@ const initialStates = {
   voteHistogramData: {},
   spendingCurveData: {},
   killRefund: false,
-  crowdSaleRefund: false
+  crowdSaleRefund: false,
+  pollFactDai: 0,
+  pollFactEther: 0,
+  userTokenBalance: 0,
+  totalTokenSupply: 0
 };
 
 export default (state = initialStates, action) => {
@@ -71,6 +75,34 @@ export default (state = initialStates, action) => {
       return {
         ...state,
         crowdSaleRefund: true
+      };
+    }
+
+    case actionTypes.USER_TOKEN_BALANCE: {
+      return {
+        ...state,
+        userTokenBalance: action.payload
+      };
+    }
+
+    case actionTypes.POLL_FACT_ETHER: {
+      return {
+        ...state,
+        pollFactEther: action.payload
+      };
+    }
+
+    case actionTypes.POLL_FACT_DAI: {
+      return {
+        ...state,
+        pollFactDai: action.payload
+      };
+    }
+
+    case actionTypes.TOTAL_TOKEN_SUPPLY: {
+      return {
+        ...state,
+        totalTokenSupply: action.payload
       };
     }
 

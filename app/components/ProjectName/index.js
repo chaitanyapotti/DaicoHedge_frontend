@@ -32,7 +32,10 @@ class ProjectName extends React.Component {
     );
     return (
       <Grid container>
-        <CustomCard className="card-brdr" style={{ padding: '50px' }}>
+        <CustomCard
+          className="card-brdr"
+          style={{ padding: '50px', width: '100%' }}
+        >
           <Grid item lg={12}>
             <div className="hl">
               <span className="prjct-logo hli">
@@ -41,19 +44,22 @@ class ProjectName extends React.Component {
                   width="50"
                   height="50"
                   className="prjct-logo hli"
-                  src="https://image.shutterstock.com/z/stock-vector-bitcoin-icon-vector-stock-vector-illustration-flat-design-style-1199767786.jpg"
+                  src="https://pbs.twimg.com/media/DftajTpUcAAwfdJ.jpg:large"
                 />
               </span>
               <div className="hli push--left text--primary push-half--top">
-                <div className="txt-xl">Beta (BTC)</div>
+                <div className="txt-xl">Status Network Token (SNT)</div>
                 <div className="txt opacity-75">0.005 ETH</div>
               </div>
             </div>
           </Grid>
           <Grid item lg={12} className="push--top">
             <span>
-              Lorem ipsum dolor sit amet, consectetuer adipiscing elit,sed diam
-              nonummy nibh euismod tincidunt.
+              If Status was a DAICO, this is what the dashboard would look like.
+              This is a desktop extension of a wider DAICO platform designed
+              with the intention to integrate DAICO treasuries with the kyber
+              smart contract as reserve manager. It offers various modes for
+              passive market making as shown on the top right card.
             </span>
           </Grid>
           <Grid item lg={12} className="push--top">

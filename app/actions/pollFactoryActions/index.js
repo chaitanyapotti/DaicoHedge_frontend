@@ -318,3 +318,44 @@ export const getRefund = () => async dispatch => {
     dispatch({ type: actionTypes.KILL_REFUND });
   }
 };
+
+export const getUserTokenBalance = () => async dispatch => {
+  const pba = await web3.eth.getAccounts();
+  const tokenInstance = await contractInstance(
+    'DaicoToken',
+    config.daicoToken_contract_address
+  );
+  const balance = web3.utils.fromWei(
+    await tokenInstance.methods.balanceOf(pba[0]).call()
+  );
+  dispatch({type: actionTypes.USER_TOKEN_BALANCE, payload: balance})
+};
+
+export const getPollFactoryEther = () =>  async dispatch => {
+  const balance = web3.utils.fromWei(
+    await web3.eth.getBalance(config.pollFactory_contract_address).call()
+  );
+  dispatch({type: actionTypes.POLL_FACT_ETHER, payload: balance})
+};
+
+export const getPollFactoryDai = () => async dispatch => {
+  const tokenInstance = await contractInstance(
+    'DaicoToken',
+    config.daiToken_contract_address
+  );
+  const balance = web3.utils.fromWei(
+    await tokenInstance.methods.balanceOf(config.pollFactory_contract_address).call()
+  );
+  dispatch({type: actionTypes.POLL_FACT_DAI, payload: balance})
+}
+
+export const getTotalSupply = () => async dispatch => {
+  const okenInstance = await contractInstance(
+    'DaicoToken',
+    config.daiToken_contract_address
+  );
+  const balance = web3.utils.fromWei(
+    await tokenInstance.methods.totalSupply().call()
+  );
+  dispatch({type: actionTypes.TOTAL_TOKEN_SUPPLY, payload: balance})
+}

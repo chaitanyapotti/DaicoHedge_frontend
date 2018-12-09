@@ -8,11 +8,13 @@ Array.prototype.max = function() {
 const getOption = voteHistogramData => {
   const binRanges = [];
   const binValues = [];
-  for (let index = 0; index < voteHistogramData.length; index += 1) {
-    const element = voteHistogramData[index];
+  for (const property in voteHistogramData) {
+    const element = voteHistogramData[property];
     binRanges.push(`${element.min}%-${element.max}%`);
     binValues.push(element.voters);
   }
+
+  console.log('histogr', binRanges, binValues);
   return {
     // tooltip: {
     //     trigger: 'none',

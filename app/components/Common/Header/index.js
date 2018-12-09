@@ -23,9 +23,7 @@ function Header(props) {
     <div className={classes.root}>
       <AppBar className={classes.colorDefault} position="static">
         <Toolbar>
-          <div className="txt-xl text--primary">
-            DAICO Manager (My DAICO Mdc)
-          </div>
+          <div className="txt-xl text--primary">DAICO Hedge</div>
         </Toolbar>
         {/* <Link to="/investor">
           <CustomButton>Investor Page</CustomButton>
