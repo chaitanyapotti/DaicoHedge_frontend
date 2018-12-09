@@ -72,15 +72,17 @@ export const getCurrentTap = () => async dispatch => {
 };
 
 export const getRemainingBalance = () => async dispatch => {
-  const etherBalance = await web3.utils.fromWei(
+  const etherBalance = web3.utils.fromWei(
     await web3.eth.getBalance(config.pollFactory_contract_address)
   );
   const daiInstance = await contractInstance(
-    'PollFactory',
+    'DaicoToken',
     config.daiToken_contract_address
   );
-  const daiBalance = await web3.utils.fromWei(
-    await daiInstance.methods.balanceOf(config.pollFactory_contract_address)
+  const daiBalance = web3.utils.fromWei(
+    await daiInstance.methods
+      .balanceOf(config.pollFactory_contract_address)
+      .call()
   );
   dispatch(remainingBalanceReceived(etherBalance, daiBalance));
 };
@@ -296,7 +298,7 @@ export const getRefund = () => async dispatch => {
       config.SENDER_PRIVATE_KEY
     );
     let txHash = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
-    dispatch({type: actionTypes.CROWD_SALE_REFUND})
+    dispatch({ type: actionTypes.CROWD_SALE_REFUND });
   }
   if (treasuryRound === '3') {
     const txData = await instance.methods.refundByKill().encodeABI();
@@ -313,6 +315,6 @@ export const getRefund = () => async dispatch => {
       config.SENDER_PRIVATE_KEY
     );
     let txHash = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
-    dispatch({type: actionTypes.KILL_REFUND})
+    dispatch({ type: actionTypes.KILL_REFUND });
   }
 };
