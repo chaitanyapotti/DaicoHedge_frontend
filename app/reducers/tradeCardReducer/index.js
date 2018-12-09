@@ -56,7 +56,8 @@ export default function TradeCardData(state = initialStates, action) {
         ...state,
         manualEthOffloadingStarted: false,
         manualDaiOffloadingStarted: false,
-        daiRatioBalancingStarted: false
+        daiRatioBalancingStarted: false,
+        botStartedSuccessfully: false
       };
     }
 

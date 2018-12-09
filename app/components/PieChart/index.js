@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import ReactEcharts from 'echarts-for-react';
 import { Grid } from '@material-ui/core';
 
@@ -188,4 +189,28 @@ const PieChart = props => {
   );
 };
 
-export default PieChart;
+const mapStatesToProps = state => {
+  const { spreadPercentage, balanceRatio, balancingAggressionFactor, avgPrice, manualAggressionFactor, botStartedSuccessfully, 
+    currentStrategy, currentStrategyCode, manualEthAmount, 
+    manualDaiAmount, current_ask,
+    current_bid } =
+    state.TradeCardData || {};
+  const { etherBalance, daiBalance } = state.PollFactoryReducer || {}
+  return {
+    spreadPercentage,
+    balanceRatio,
+    balancingAggressionFactor,
+    avgPrice,
+    manualAggressionFactor,
+    etherBalance,
+    daiBalance,
+    botStartedSuccessfully,
+    currentStrategy,
+    currentStrategyCode
+  };
+};
+
+const myConnector = connect(mapStatesToProps);
+const PieChartConnected = myConnector(PieChart);
+
+export default PieChartConnected;

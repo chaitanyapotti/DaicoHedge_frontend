@@ -105,10 +105,10 @@ class CustomSnackBar extends React.Component {
           }}
           open={open}
           autoHideDuration={6000}
-          onClose={() => this.onClose()}
+          onClose={onClose}
         >
           <MySnackbarContentWrapper
-            onClose={() => this.onClose()}
+            onClose={onClose}
             variant="success"
             message="This is a success message!"
           />
