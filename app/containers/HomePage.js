@@ -14,7 +14,8 @@ class HomePage extends Component<Props> {
     const {
       manualEthOffloadingStarted,
       manualDaiOffloadingStarted,
-      daiRatioBalancingStarted
+      daiRatioBalancingStarted,
+      botStartedSuccessfully
     } = this.props || {};
     console.log('homepage', this.props);
     return (
@@ -24,7 +25,8 @@ class HomePage extends Component<Props> {
           open={
             manualEthOffloadingStarted ||
             manualDaiOffloadingStarted ||
-            daiRatioBalancingStarted
+            daiRatioBalancingStarted ||
+            botStartedSuccessfully
           }
           onClose={() => this.props.dispatch(closeSnackbar())}
         />
@@ -37,12 +39,14 @@ const mapStatesToProps = state => {
   const {
     manualEthOffloadingStarted,
     manualDaiOffloadingStarted,
-    daiRatioBalancingStarted
+    daiRatioBalancingStarted,
+    botStartedSuccessfully
   } = state.TradeCardData || {};
   return {
     manualEthOffloadingStarted,
     manualDaiOffloadingStarted,
-    daiRatioBalancingStarted
+    daiRatioBalancingStarted,
+    botStartedSuccessfully
   };
 };
 

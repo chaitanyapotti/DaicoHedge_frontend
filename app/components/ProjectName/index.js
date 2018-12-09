@@ -27,6 +27,9 @@ class ProjectName extends React.Component {
       etherBalance,
       daiBalance
     } = this.props || {};
+    const tapAmount = Math.round(
+      (parseFloat(currentTap) * 86400 * 30) / 10 ** 18
+    );
     return (
       <Grid container>
         <CustomCard
@@ -64,15 +67,15 @@ class ProjectName extends React.Component {
               <Grid item lg={5}>
                 <div className="txt-bold">
                   Current Tap Amount:{' '}
-                  <span className="text--secondary">
-                    {currentTap} ETH/month
-                  </span>
+                  <span className="text--secondary">{tapAmount} ETH/month</span>
                 </div>
               </Grid>
               <Grid item lg={7}>
                 <div className="txt-bold">
                   Increment Approval:{' '}
-                  <span className="text--secondary">{tapConsensus} %</span>
+                  <span className="text--secondary">
+                    {(parseFloat(tapConsensus) / 100).toFixed(2)} %
+                  </span>
                 </div>
               </Grid>
             </Grid>
@@ -84,7 +87,8 @@ class ProjectName extends React.Component {
                 <div className="txt-bold">
                   Kill Consensus:{' '}
                   <span className="text--secondary">
-                    {isNaN(killConsensus) ? 0 : killConsensus} ETH/month
+                    {isNaN(killConsensus) ? 0 : parseFloat(killConsensus) / 100}{' '}
+                    %
                   </span>
                 </div>
               </Grid>
