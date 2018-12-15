@@ -29,6 +29,7 @@ class HomePage extends Component<Props> {
             botStartedSuccessfully
           }
           onClose={() => this.props.dispatch(closeSnackbar())}
+          message="Successfully started market making"
         />
       </div>
     );
